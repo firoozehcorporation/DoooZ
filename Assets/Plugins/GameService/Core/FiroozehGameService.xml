@@ -79,6 +79,14 @@
             <param name="scoreLimit">(Min = 10,Max = 50) The Score List Limits</param>
             <value> return LeaderBoardDetails </value>
         </member>
+        <member name="M:FiroozehGameService.Core.GameService.GetCurrentPlayerScore(System.String)">
+            <summary>
+                With this command you can get Current Player Score with the ID of the LeaderBoard id
+                you registered in the Developer panel.
+            </summary>
+            <param name="leaderBoardId">(Not NULL)The ID of leaderBoard you Want To get Score</param>
+            <value> return Score </value>
+        </member>
         <member name="M:FiroozehGameService.Core.GameService.GetCurrentPlayer">
             <summary>
                 With this command you can get information about the current player is playing
@@ -165,6 +173,12 @@
             </summary>
             <value> return The Current Times</value>
         </member>
+        <member name="M:FiroozehGameService.Core.GameService.CanLoginWithPhoneNumber">
+            <summary>
+                This command Check Can Login With Phone Number
+            </summary>
+            <value> return The Status</value>
+        </member>
         <member name="M:FiroozehGameService.Core.GameService.GetAssetInfo(System.String)">
             <summary>
                 Gets Asset Info With AssetTag
@@ -226,6 +240,14 @@
             <param name="isPublic">Specifies the Function Visibility Type that Set in Developers Panel</param>
             <value> return Result in String </value>
         </member>
+        <member name="M:FiroozehGameService.Core.GameService.SendLoginCodeWithSms(System.String)">
+            <summary>
+                Send Login Code With SMS , If you want to LoginWithPhoneNumber, You Must Call This Function first
+                It May Throw Exception
+                <param name="phoneNumber">(Not NULL)Specifies the Phone Number</param>
+            </summary>
+            <value> return true if Send Successfully </value>
+        </member>
         <member name="M:FiroozehGameService.Core.GameService.Login(System.String,System.String)">
             <summary>
                 Normal Login (InFirstOnly) To Game Service
@@ -246,6 +268,18 @@
                 <param name="idToken">(Not NULL)Specifies the idToken From GoogleSignInUser Class.</param>
             </summary>
             <value> return UserToken if Login Successfully </value>
+        </member>
+        <member name="M:FiroozehGameService.Core.GameService.LoginWithPhoneNumber(System.String,System.String,System.String)">
+             <summary>
+                 Normal Login With Phone Number To Game Service
+                 You Must Call SendLoginCodeWithSms First, to get SMS Code.
+                 It May Throw Exception
+            
+                 <param name="nickName">(Not NULL)Specifies Nick Name </param>
+                 <param name="phoneNumber">(Not NULL)Specifies the Phone Number</param>
+                 <param name="smsCode">(Not NULL)Specifies SMS Code</param>
+             </summary>
+             <value> return UserToken if Login Successfully </value>
         </member>
         <member name="M:FiroozehGameService.Core.GameService.Login">
             <summary>
@@ -1141,18 +1175,6 @@
                 Represents Score Data Model In Game Service Basic API
             </summary>
         </member>
-        <member name="F:FiroozehGameService.Models.BasicApi.Score.Game">
-            <summary>
-                Gets the Game id.
-            </summary>
-            <value>the Game id</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.BasicApi.Score.Rank">
-            <summary>
-                Gets the Rank of This Score.
-            </summary>
-            <value>the Rank of This Score</value>
-        </member>
         <member name="F:FiroozehGameService.Models.BasicApi.Score.Submitter">
             <summary>
                 Gets the Member Submit this Score.
@@ -1170,6 +1192,12 @@
                 Gets the Value of This Score.
             </summary>
             <value>the Value of This Score</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.Score.Rank">
+            <summary>
+                Gets the Rank of This Score.
+            </summary>
+            <value>the Rank of This Score</value>
         </member>
         <member name="T:FiroozehGameService.Models.BasicApi.SubmitScoreResponse">
             <summary>
