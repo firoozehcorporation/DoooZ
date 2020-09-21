@@ -110,25 +110,6 @@ public class GameControllers : MonoBehaviour {
     }
 
     /// <summary>
-    /// Get Last Save User Data
-    /// It May Throw Exception
-    /// </summary>
-    private async Task GetSaveData()
-    {
-        try
-        {
-            var save = await GameService.GetSaveGame<Save>();
-            FileUtil.SaveWins(save.WinCounts);
-            Debug.Log("GetSaveData Wins : " + save.WinCounts);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("GetSaveData Err : " + e.Message);
-        }
-    }
-
-    
-    /// <summary>
     /// Connect To GameService -> Login Or SignUp
     /// It May Throw Exception
     /// </summary>
@@ -508,7 +489,7 @@ public class GameControllers : MonoBehaviour {
        
     }
 
-    private async void OnCompleted(object sender, Complete complete)
+    private void OnCompleted(object sender, Complete complete)
     {
         try
         {
@@ -517,10 +498,6 @@ public class GameControllers : MonoBehaviour {
             // Show Winner
             Turn.color = Color.magenta;
             Turn.text = complete.Result.Any(o => o.Key == _me.Id && o.Value.Placement == 1) ? "You wins!" : "Opponent wins!";
-            
-            // You Win!
-            if(complete.Result.Any(o => o.Key == _me.Id && o.Value.Placement == 1))
-                await FileUtil.IncreaseWin();
         }
         catch (Exception e)
         {
@@ -564,11 +541,10 @@ public class GameControllers : MonoBehaviour {
         Status.text = "Error : " + e.Error + " , From : " + e.Type;
     }
 
-    private async void OnSuccessfullyLogined(object sender, EventArgs e)
+    private void OnSuccessfullyLogined(object sender, EventArgs e)
     {
         try
         {
-            await GetSaveData();
             Status.text = "Status : Connected!";
             startGameBtn.interactable = true;
         
