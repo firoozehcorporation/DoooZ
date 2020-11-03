@@ -20,6 +20,7 @@
 */
 
 
+using System;
 using FiroozehGameService.Builder;
 using Plugins.GameService.Tools.NaughtyAttributes.Scripts.Core.MetaAttributes;
 using Plugins.GameService.Tools.NaughtyAttributes.Scripts.Core.ValidatorAttributes;
@@ -42,11 +43,15 @@ namespace Plugins.GameService.Utils
         [BoxGroup("Enable this feature only when you need RealTime")]
         public bool RealTimeUtilEnabled;
 
+
+        private void Awake()
+        {
+            DontDestroyOnLoad(this);
+        }
+
         private void OnEnable()
         {
             if(FiroozehGameService.Core.GameService.IsAuthenticated()) return;
-            DontDestroyOnLoad(this);
-
             var systemInfo = new SystemInfo
             {
                 DeviceUniqueId = UnityEngine.SystemInfo.deviceUniqueIdentifier,

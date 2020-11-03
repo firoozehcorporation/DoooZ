@@ -78,13 +78,13 @@ public class GameControllers : MonoBehaviour {
     private Member _me,_opponent,_currentTurnMember,_whoIsX;
     private Dictionary<string, Outcome> _outcomes;
     
-    private List<Member> members;
+    private List<Member> _members;
     
     
    
     
     // Start is called before the first frame update
-    async void Start ()
+    private async void Start ()
     {
         try
         {
@@ -105,7 +105,6 @@ public class GameControllers : MonoBehaviour {
     void Update ()
     {
         if (!Input.GetKeyDown(KeyCode.Escape)) return;
-        GameService.Logout();
         Application.Quit();
     }
 
@@ -209,9 +208,8 @@ public class GameControllers : MonoBehaviour {
     /// </summary>
     private void SetEventListeners()
     {
-        CoreEventHandlers.SuccessfullyLogined += OnSuccessfullyLogined;
+        TurnBasedEventHandlers.SuccessfullyLogined += OnSuccessfullyLogined;
         TurnBasedEventHandlers.Error += OnError;
-                
         TurnBasedEventHandlers.JoinedRoom += OnJoinRoom;
         TurnBasedEventHandlers.Completed += OnCompleted;
         TurnBasedEventHandlers.AutoMatchUpdated += AutoMatchUpdated;
@@ -221,7 +219,6 @@ public class GameControllers : MonoBehaviour {
         TurnBasedEventHandlers.LeftRoom += OnLeaveRoom;
         TurnBasedEventHandlers.RoomMembersDetailReceived += OnRoomMembersDetailReceived;
         TurnBasedEventHandlers.CurrentTurnMemberReceived += OnCurrentTurnMember;
-
         LogUtil.LogEventHandler += LogEventHandler;
     }
 
@@ -510,6 +507,7 @@ public class GameControllers : MonoBehaviour {
     private async void OnJoinRoom(object sender, JoinEvent e)
     {
 
+        Debug.Log("OnJoinRoom");
         try
         {
             startMenu.enabled = false;
@@ -539,6 +537,7 @@ public class GameControllers : MonoBehaviour {
     {
         Status.color = Color.red;
         Status.text = "Error : " + e.Error + " , From : " + e.Type;
+        Debug.LogError("GameService Err : " + e.Error + " , From : " + e.Type);
     }
 
     private void OnSuccessfullyLogined(object sender, EventArgs e)
@@ -570,7 +569,7 @@ public class GameControllers : MonoBehaviour {
     {
         foreach (var member in e.Players)
         {
-            Debug.Log(member.Name);
+            Debug.Log(member.User.Name);
         }
        
     }
