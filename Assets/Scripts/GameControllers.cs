@@ -34,7 +34,6 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
-using LogType = FiroozehGameService.Utils.LogType;
 
 /**
 * @author Alireza Ghodrati
@@ -79,10 +78,13 @@ public class GameControllers : MonoBehaviour {
     private Dictionary<string, Outcome> _outcomes;
     
     private List<Member> _members;
-    
-    
-   
-    
+
+    private bool _isSuccessfullyLogin;
+    private bool isMatchmaking;
+
+
+
+
     // Start is called before the first frame update
     private async void Start ()
     {
@@ -104,6 +106,20 @@ public class GameControllers : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
+        if (_isSuccessfullyLogin && !GameService.GSLive.IsCommandAvailable())
+        {
+            startGameBtn.interactable = false;
+            Status.color = Color.red;
+            Status.text = "GameService Not Connected";
+        }
+        else if (_isSuccessfullyLogin && GameService.GSLive.IsCommandAvailable())
+        {
+            if(!isMatchmaking) startGameBtn.interactable = true;
+            Status.color = Color.black;
+            Status.text = "Status : Connected!";
+        }
+        
+        
         if (!Input.GetKeyDown(KeyCode.Escape)) return;
         Application.Quit();
     }
@@ -227,8 +243,7 @@ public class GameControllers : MonoBehaviour {
 
      private void LogEventHandler(object sender, Log e)
     {
-       if(e.Type == LogType.Normal) Debug.Log(e.Txt);
-        else Debug.LogError(e.Txt);
+       Debug.LogError(e.Type + " ~ " + e.Txt);
     }
 
 
@@ -301,9 +316,10 @@ public class GameControllers : MonoBehaviour {
         // Is My Turn
         try
         {
+            Debug.Log("TurnBased Available : " + GameService.GSLive.IsTurnBasedAvailable());
             if (!_currentTurnMember.User.IsMe) return;
             // Send TakeTurnData To Opponent
-            await GsLiveHandler.TakeTurn(_whoTurn == 1 ? 0 : 1, buttonNumber,_whoTurn,_opponent.Id);
+            await GsLiveHandler.TakeTurn(_whoTurn == 1 ? 0 : 1, buttonNumber,_whoTurn,_opponent?.Id);
         }
         catch (Exception e)
         {
@@ -508,6 +524,11 @@ public class GameControllers : MonoBehaviour {
     {
 
         Debug.Log("OnJoinRoom");
+        Debug.Log("JoinedPlayers : " + e.JoinData.RoomData.JoinedPlayers);
+
+        isMatchmaking = false;
+        
+        
         try
         {
             startMenu.enabled = false;
@@ -544,17 +565,30 @@ public class GameControllers : MonoBehaviour {
     {
         try
         {
+            _isSuccessfullyLogin = true;
             Status.text = "Status : Connected!";
             startGameBtn.interactable = true;
         
             // Start Game
             startGameBtn.onClick.AddListener(async () =>
             {
-                await GameService.GSLive.TurnBased.AutoMatch(new GSLiveOption.AutoMatchOption("partner",2,2));
+                if (GameService.GSLive.IsCommandAvailable())
+                {
+                    isMatchmaking = true;
+                    await GameService.GSLive.TurnBased.AutoMatch(
+                        new GSLiveOption.AutoMatchOption("partner", 2, 2, false));
 
-                // go to waiting ui
-                startGameBtn.interactable = false;
-                startMenuText.text = "MatchMaking...";
+                    // go to waiting ui
+                    startGameBtn.interactable = false;
+                    startMenuText.text = "MatchMaking...";
+                }
+                else
+                {
+                    startGameBtn.interactable = false;
+                    Status.color = Color.red;
+                    Status.text = "GameService Not Connected";
+                }
+
             });
         }
         catch (Exception exception)

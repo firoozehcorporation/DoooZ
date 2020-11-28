@@ -420,7 +420,7 @@
                 Represents GSLive CreateRoomOption
             </summary>
         </member>
-        <member name="M:FiroozehGameService.Core.GSLive.GSLiveOption.CreateRoomOption.#ctor(System.String,System.String,System.Int32,System.Int32,System.Boolean,System.Boolean,System.String)">
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveOption.CreateRoomOption.#ctor(System.String,System.String,System.Int32,System.Int32,System.Boolean,System.Boolean,System.String,System.String)">
             <summary>
                 Specifies the CreateRoom Options
             </summary>
@@ -431,6 +431,7 @@
             <param name="isPrivate">Specifies the Room Privacy</param>
             <param name="isPersist">Specifies the Room Persistence</param>
             <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
+            <param name="roomPassword">Specifies the Room Password If the Room is Private</param>
         </member>
         <member name="T:FiroozehGameService.Core.GSLive.GSLiveRT">
             <summary>
@@ -454,12 +455,13 @@
                 Cancel Current AutoMatch
             </summary>
         </member>
-        <member name="M:FiroozehGameService.Core.GSLive.GSLiveRT.JoinRoom(System.String,System.String)">
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveRT.JoinRoom(System.String,System.String,System.String)">
             <summary>
                 Join In Room With RoomID
             </summary>
             <param name="roomId">(NOTNULL)Room's id You Want To Join</param>
             <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
+            <param name="password">(NULLABLE)Specifies the Password if Room is Private</param>
         </member>
         <member name="M:FiroozehGameService.Core.GSLive.GSLiveRT.LeaveRoom">
             <summary>
@@ -559,12 +561,13 @@
                 Cancel Current AutoMatch
             </summary>
         </member>
-        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.JoinRoom(System.String,System.String)">
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.JoinRoom(System.String,System.String,System.String)">
             <summary>
                 Join In Room With RoomID
             </summary>
             <param name="roomId">(NOTNULL)Room's id You Want To Join</param>
-            <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
+            <param name="extra">(NULLABLE)Specifies the Extra Data To Send to Other Clients</param>
+            <param name="password">(NULLABLE)Specifies the Password if Room is Private</param>
         </member>
         <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetAvailableRooms(System.String)">
             <summary>
@@ -588,6 +591,24 @@
                 if whoIsNext Set Null , Server Automatically Selects Next Turn
             </summary>
             <param name="whoIsNext">(NULLABLE)Next Player's ID </param>
+        </member>
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.SetProperty(System.String,System.String)">
+            <summary>
+                Every Member can Set Properties to Sync Data With EachOthers
+            </summary>
+            <param name="key">(NOTNULL)  The Key Value</param>
+            <param name="value">(NOTNULL) The Value of Key </param>
+        </member>
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.RemoveProperty(System.String)">
+            <summary>
+                Delete Properties And Sync it With EachOthers
+            </summary>
+            <param name="key">(NOTNULL) The Key Value</param>
+        </member>
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetProperties">
+            <summary>
+                Get All Properties
+            </summary>
         </member>
         <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.LeaveRoom(System.String)">
             <summary>
@@ -758,7 +779,7 @@
                 Calls When SomeOne Join To Current Room
                 It Maybe Current Player or Another
                 This Event Handler Called By Following Functions :
-                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.JoinRoom(System.String,System.String)" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.JoinRoom(System.String,System.String,System.String)" />
                 <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.CreateRoom(FiroozehGameService.Core.GSLive.GSLiveOption.CreateRoomOption)" />
                 <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.AutoMatch(FiroozehGameService.Core.GSLive.GSLiveOption.AutoMatchOption)" />
             </summary>
@@ -846,7 +867,7 @@
                 Calls When SomeOne Join To Current Room
                 It Maybe Current Player or Another
                 This Event Handler Called By Following Functions :
-                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.JoinRoom(System.String,System.String)" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.JoinRoom(System.String,System.String,System.String)" />
                 <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.CreateRoom(FiroozehGameService.Core.GSLive.GSLiveOption.CreateRoomOption)" />
                 <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.AutoMatch(FiroozehGameService.Core.GSLive.GSLiveOption.AutoMatchOption)" />
             </summary>
@@ -868,6 +889,19 @@
             <summary>
                 Returns New Turn From Another Players When Call The Following Function :
                 <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.ChooseNext(System.String)" />
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Handlers.TurnBasedEventHandlers.PropertyUpdated">
+            <summary>
+                Returns NewOrUpdate Property From Another Players When Call The Following Functions :
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.SetProperty(System.String,System.String)" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.RemoveProperty(System.String)" />
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Handlers.TurnBasedEventHandlers.PropertiesReceived">
+            <summary>
+                Returns Properties From Another Players When Call The Following Function :
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetProperties" />
             </summary>
         </member>
         <member name="F:FiroozehGameService.Handlers.TurnBasedEventHandlers.Finished">
@@ -1461,6 +1495,21 @@
                 Represents MessageType Of RealTime System
             </summary>
         </member>
+        <member name="T:FiroozehGameService.Models.Enums.GSLive.TB.PropertyAction">
+            <summary>
+            Represents Game Service TurnBased Property Actions
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.TB.PropertyAction.SetOrUpdate">
+            <summary>
+            SetOrUpdate the Value of Key
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.TB.PropertyAction.Delete">
+            <summary>
+            Delete the Value of Key
+            </summary>
+        </member>
         <member name="T:FiroozehGameService.Models.EventArgs.DownloadCancelledArgs">
             <summary>
                 Represents DownloadProgressArgs
@@ -1806,12 +1855,6 @@
                 Represents JoinData Data Model In GameService MultiPlayer System (GSLive)
             </summary>
         </member>
-        <member name="F:FiroozehGameService.Models.GSLive.JoinData.JoinedMember">
-            <summary>
-                Gets the Player Member Who Joined To Room.
-            </summary>
-            <value>the Player Member Who Joined To Room</value>
-        </member>
         <member name="F:FiroozehGameService.Models.GSLive.JoinData.JoinType">
             <summary>
                 Gets the Room Join Type.
@@ -1824,6 +1867,18 @@
                 Gets the Room Join Data.
             </summary>
             <value>the Room Join Data</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.GSLive.JoinData.JoinedMember">
+            <summary>
+                Gets the Player Member Who Joined To Room.
+            </summary>
+            <value>the Player Member Who Joined To Room</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.GSLive.JoinData.JoinedMemberOrder">
+            <summary>
+                Gets the Player Member Order Who Joined To Room.
+            </summary>
+            <value>the Player Member Order Who Joined To Room</value>
         </member>
         <member name="T:FiroozehGameService.Models.GSLive.Member">
             <summary>
@@ -2183,6 +2238,54 @@
             <param name="other"></param>
             <returns></returns>
         </member>
+        <member name="T:FiroozehGameService.Models.GSLive.TB.PropertyPayload">
+            <summary>
+             Represents PropertyPayload Data Model In GameService TurnBased MultiPlayer System (GSLive)
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.GSLive.TB.PropertyPayload.Action">
+            <summary>
+                Gets the Property Action Type.
+            </summary>
+            <value>the PropertyPayload Action Type</value>
+            <see cref="T:FiroozehGameService.Models.Enums.GSLive.TB.PropertyAction" />
+        </member>
+        <member name="F:FiroozehGameService.Models.GSLive.TB.PropertyPayload.Owner">
+            <summary>
+                Gets the Property Owner Member.
+            </summary>
+            <value>the Property Owner Member</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.GSLive.TB.PropertyPayload.Key">
+            <summary>
+                Gets the Property Key.
+            </summary>
+            <value>the Property Key</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.GSLive.TB.PropertyPayload.Value">
+            <summary>
+                Gets the Property Value.
+            </summary>
+            <value>the Property Value</value>
+        </member>
+        <member name="T:FiroozehGameService.Models.GSLive.TB.PropertyData">
+            <summary>
+             Represents PropertyData Data Model In GameService TurnBased MultiPlayer System (GSLive)
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.GSLive.TB.PropertyData.Owner">
+            <summary>
+                Gets the Property Owner Member.
+            </summary>
+            <value>the Property Owner Member</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.GSLive.TB.PropertyData.Properties">
+            <summary>
+                Gets the Properties.
+                The Key , Value Dictionary
+            </summary>
+            <value>the Properties</value>
+        </member>
         <member name="T:FiroozehGameService.Models.GSLive.TB.Turn">
             <summary>
                 Represents Turn Data Model In GameService TurnBased MultiPlayer System
@@ -2328,7 +2431,7 @@
             <summary>
                 Calls When Current Player Left the Current Room
                 This Event Handler Called By Following Function :
-                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.JoinRoom(System.String,System.String)" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.JoinRoom(System.String,System.String,System.String)" />
             </summary>
         </member>
         <member name="T:FiroozehGameService.Utils.Serializer.GsSerializer.TypeRegistry">
