@@ -9,6 +9,30 @@
                 Represents ClientConfiguration For Game Service
             </summary>
         </member>
+        <member name="M:FiroozehGameService.Builder.GameServiceClientConfiguration.#ctor(System.String,System.String,FiroozehGameService.Models.Internal.SystemInfo)">
+            <summary>
+            Set GameServiceClientConfiguration Values
+            </summary>
+            <param name="clientId">Set The ClientId From Developers Panel</param>
+            <param name="clientSecret">Set The ClientSecret From Developers Panel</param>
+            <param name="systemInfo">Set systemInfo</param>
+            <exception cref="T:FiroozehGameService.Models.GameServiceException">May GameServiceException Occur</exception>
+        </member>
+        <member name="T:FiroozehGameService.Builder.GameServiceDebugConfiguration">
+            <summary>
+                Represents GameServiceDebugConfiguration For Game Service
+            </summary>
+        </member>
+        <member name="M:FiroozehGameService.Builder.GameServiceDebugConfiguration.#ctor(System.Boolean,System.Boolean,System.Boolean,FiroozehGameService.Models.Enums.DebugLocation[])">
+            <summary>
+            Set GameServiceDebugConfiguration Values
+            </summary>
+            <param name="enableException">Set Debug Exception Enable</param>
+            <param name="enableError">Set Debug Error Enable</param>
+            <param name="enableDebug">Set Debug Debug Enable</param>
+            <param name="debugLocations">Set DebugLocations , If Not Set Debug All Systems</param>
+            <exception cref="T:FiroozehGameService.Models.GameServiceException">May GameServiceException Occur</exception>
+        </member>
         <member name="T:FiroozehGameService.Core.DownloadManager">
             <summary>
                 Represents Game Service DownloadManager
@@ -23,7 +47,13 @@
             <summary>
                 Set configuration For Initialize Game Service.
             </summary>
-            <param name="configuration">(Not NULL)configuration For Initialize Game Service</param>
+            <param name="configuration">(NOTNULL)configuration For Initialize Game Service</param>
+        </member>
+        <member name="M:FiroozehGameService.Core.GameService.ConfigurationDebug(FiroozehGameService.Builder.GameServiceDebugConfiguration)">
+            <summary>
+                Set configuration For Game Service Debug System
+            </summary>
+            <param name="configuration">(NOTNULL)configuration For Game Service Debug System</param>
         </member>
         <member name="M:FiroozehGameService.Core.GameService.GetLeaderBoards">
             <summary>
@@ -236,7 +266,7 @@
                 Cancel Download Asset With Asset Info
             </summary>
         </member>
-        <member name="M:FiroozehGameService.Core.GameService.ExecuteCloudFunction(System.String,System.Object,System.Boolean)">
+        <member name="M:FiroozehGameService.Core.GameService.ExecuteCloudFunction``1(System.String,System.Object,System.Boolean)">
             <summary>
                 Execute Cloud Function
                 note : if Function is public , You Can Call it without Login
@@ -314,6 +344,11 @@
         <member name="M:FiroozehGameService.Core.GameService.Logout">
             <summary>
                 Logout From Game Service
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Core.GameService.OnDebugReceived">
+            <summary>
+            Returns Debug Data
             </summary>
         </member>
         <member name="T:FiroozehGameService.Core.GSLive.GSLive">
@@ -1105,6 +1140,43 @@
             <param name="phoneNumber">the value of phoneNumber you want to update</param>
             <param name="email">the value of email you want to update</param>
         </member>
+        <member name="T:FiroozehGameService.Models.BasicApi.FaaS.FaaSCore">
+            <summary>
+            Represents FaaSCore Data Model In Game Service Basic API
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.FaaS.FaaSCore.Id">
+            <summary>
+                Gets the Function ID.
+            </summary>
+            <value>the Function ID</value>
+        </member>
+        <member name="T:FiroozehGameService.Models.BasicApi.FaaS.FaaSResponse`1">
+            <summary>
+            Represents FaaSResponse Data Model In Game Service Basic API
+            </summary>
+        </member>
+        <member name="P:FiroozehGameService.Models.BasicApi.FaaS.FaaSResponse`1.Status">
+            <summary>
+            Gets the FaaSResponse Status
+            </summary>
+        </member>
+        <member name="P:FiroozehGameService.Models.BasicApi.FaaS.FaaSResponse`1.Message">
+            <summary>
+            Gets the Error Message
+            Message Available When status is false
+            </summary>
+        </member>
+        <member name="P:FiroozehGameService.Models.BasicApi.FaaS.FaaSResponse`1.Response">
+            <summary>
+            Gets the Response Object
+            </summary>
+        </member>
+        <member name="P:FiroozehGameService.Models.BasicApi.FaaS.FaaSResponse`1.ExecutionTime">
+            <summary>
+            Gets the Function ExecutionTime
+            </summary>
+        </member>
         <member name="T:FiroozehGameService.Models.BasicApi.LeaderBoard">
             <summary>
                 Represents LeaderBoard Data Model In Game Service Basic API
@@ -1454,9 +1526,59 @@
                 Represents BucketOwnershipTypes Model In Game Service Basic API
             </summary>
         </member>
+        <member name="F:FiroozehGameService.Models.Enums.BucketOwnershipTypes.Me">
+            <summary>
+            Sets The Current Member OwnerShip
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.BucketOwnershipTypes.Another">
+            <summary>
+            Sets The Other Member OwnerShip
+            </summary>
+        </member>
         <member name="T:FiroozehGameService.Models.Enums.BucketSortOrder">
             <summary>
                 Represents BucketSortOrder Model In Game Service Basic API
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Enums.DebugLocation">
+            <summary>
+             Represents Game Service DebugLocation Class
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.DebugLocation.All">
+            <summary>
+            Happened In All GameService Systems
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.DebugLocation.Internal">
+            <summary>
+            Happened In GameService Core 
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.DebugLocation.Http">
+            <summary>
+            Happened In Http Service
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.DebugLocation.Command">
+            <summary>
+            Happened In Command Service
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.DebugLocation.Chat">
+            <summary>
+            Happened In Chat Service
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.DebugLocation.TurnBased">
+            <summary>
+            Happened In TurnBased Service
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.DebugLocation.RealTime">
+            <summary>
+            Happened In RealTime Service
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Enums.GProtocolSendType">
@@ -1465,9 +1587,29 @@
                 if is Reliable , the Packet Loss is Minimized.
             </summary>
         </member>
+        <member name="F:FiroozehGameService.Models.Enums.GProtocolSendType.UnReliable">
+            <summary>
+            Sets To Use GProtocol To Send Packets on UnReliable Tech
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GProtocolSendType.Reliable">
+            <summary>
+            Sets To Use GProtocol To Send Packets on Reliable Tech
+            </summary>
+        </member>
         <member name="T:FiroozehGameService.Models.Enums.GSLive.AutoMatchStatus">
             <summary>
                 Represents AutoMatchStatus Of GSLive System
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.AutoMatchStatus.OnWaiting">
+            <summary>
+            Set When Current Member Joined To AutoMatch Queue
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.AutoMatchStatus.OnUserUpdated">
+            <summary>
+            Set When Other Member Joined To AutoMatch Queue
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Enums.GSLive.Command.AutoMatchCancel">
@@ -1475,9 +1617,14 @@
                 Represents AutoMatchCancel
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Enums.GSLive.Command.MarketType">
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.Command.AutoMatchCancel.Success">
             <summary>
-                Represents MarketType Model In Notification
+            Set When AutoMatchCancel Success
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.Command.AutoMatchCancel.NotInQueue">
+            <summary>
+            Set When The Member Not In AutoMatch Queue
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Enums.GSLive.GSLiveType">
@@ -1485,14 +1632,54 @@
                 Represents GSLiveType Of GSLive System
             </summary>
         </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.GSLiveType.NotSet">
+            <summary>
+            Used No Where
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.GSLiveType.TurnBased">
+            <summary>
+            Used in TurnBased System
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.GSLiveType.RealTime">
+            <summary>
+            Used in RealTime System
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.GSLiveType.Command">
+            <summary>
+            Used in Command System
+            </summary>
+        </member>
         <member name="T:FiroozehGameService.Models.Enums.GSLive.JoinType">
             <summary>
                 Represents JoinType Of GSLive System
             </summary>
         </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.JoinType.Normal">
+            <summary>
+            Sets When Current Member Join From Create Room
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.JoinType.AutoMatch">
+            <summary>
+            Sets When Current Member Join From AutoMatch
+            </summary>
+        </member>
         <member name="T:FiroozehGameService.Models.Enums.GSLive.RT.MessageType">
             <summary>
                 Represents MessageType Of RealTime System
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.RT.MessageType.Public">
+            <summary>
+            Set When RealTime Message is Public
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.RT.MessageType.Private">
+            <summary>
+            Set When Realtime Message is Private
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Enums.GSLive.TB.PropertyAction">
@@ -1508,6 +1695,52 @@
         <member name="F:FiroozehGameService.Models.Enums.GSLive.TB.PropertyAction.Delete">
             <summary>
             Delete the Value of Key
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Enums.LogType">
+            <summary>
+             Represents LogType Class in GameService Debug System
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.LogType.Normal">
+            <summary>
+            Normal Log
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.LogType.Error">
+            <summary>
+            Error Log
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.LogType.Exception">
+            <summary>
+            Exception Log
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.EventArgs.Debug">
+            <summary>
+            Represents Game Service Debug Class
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.EventArgs.Debug.LogTypeType">
+            <summary>
+            the Debug Type (Normal or Error)
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.EventArgs.Debug.Where">
+            <summary>
+            the Debug Location
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.EventArgs.Debug.Data">
+            <summary>
+            the Debug Data
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.EventArgs.Debug.Exception">
+            <summary>
+            the Debug Exception
+            NullAble, Only Available When  Where is Exception
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.EventArgs.DownloadCancelledArgs">
@@ -1694,102 +1927,6 @@
                 Gets the Join Data
             </summary>
             <value>the Join Data</value>
-        </member>
-        <member name="T:FiroozehGameService.Models.GSLive.Command.Notification">
-            <summary>
-                Represents Notification Model In Game Service Command
-            </summary>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.Notification.ActionData">
-            <summary>
-                Gets the Notification Action Data
-            </summary>
-            <value>the Notification Action Data</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.Notification.Description">
-            <summary>
-                Gets the Notification Description
-            </summary>
-            <value>the Notification Description</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.Notification.JsonData">
-            <summary>
-                Gets the Notification Json Data
-            </summary>
-            <value>the Notification Json Data</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.Notification.TapActionType">
-            <summary>
-                Gets the Notification Action Type
-            </summary>
-            <value>the Notification Action Type</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.Notification.Title">
-            <summary>
-                Gets the Notification Title
-            </summary>
-            <value>the Notification Title</value>
-        </member>
-        <member name="T:FiroozehGameService.Models.GSLive.Command.NotificationActionData">
-            <summary>
-                Represents NotificationActionData Model In Game Service Command
-            </summary>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.NotificationActionData.EmailAddress">
-            <summary>
-                Gets the EmailAddress Data
-                this Data may be Null if Not Set in Developer Panel
-            </summary>
-            <value>the EmailAddress Data</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.NotificationActionData.EmailBody">
-            <summary>
-                Gets the EmailBody Data
-                this Data may be Null if Not Set in Developer Panel
-            </summary>
-            <value>the EmailBody Data</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.NotificationActionData.EmailTitle">
-            <summary>
-                Gets the EmailTitle Data
-                this Data may be Null if Not Set in Developer Panel
-            </summary>
-            <value>the EmailTitle Data</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.NotificationActionData.IntentAction">
-            <summary>
-                Gets the IntentAction Data
-                this Data may be Null if Not Set in Developer Panel
-            </summary>
-            <value>the IntentAction Data</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.NotificationActionData.LinkAddress">
-            <summary>
-                Gets the LinkAddress Data
-                this Data may be Null if Not Set in Developer Panel
-            </summary>
-            <value>the LinkAddress Data</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.NotificationActionData.MarketType">
-            <summary>
-                Gets the MarketType Data
-                this Data may be Null if Not Set in Developer Panel
-            </summary>
-            <value>the MarketType Data</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.NotificationActionData.PackageName">
-            <summary>
-                Gets the PackageName Data
-                this Data may be Null if Not Set in Developer Panel
-            </summary>
-            <value>the PackageName Data</value>
-        </member>
-        <member name="F:FiroozehGameService.Models.GSLive.Command.NotificationActionData.TelegramChannel">
-            <summary>
-                Gets the TelegramChannel Data
-                this Data may be Null if Not Set in Developer Panel
-            </summary>
-            <value>the TelegramChannel Data</value>
         </member>
         <member name="T:FiroozehGameService.Models.GSLive.Game">
             <summary>
@@ -2370,6 +2507,43 @@
             <summary>
                 Represents System Info In Game Service
             </summary>
+        </member>
+        <member name="T:FiroozehGameService.Utils.DebugUtil">
+            <summary>
+              Represents Game Service DebugUtil
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Utils.Event">
+            <summary>
+             Represents Event In Game Service
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Utils.Event.EventHandler">
+            <summary>
+            Set New EventHandler by Observer
+            </summary>
+        </member>
+        <member name="M:FiroozehGameService.Utils.Event.Start">
+            <summary>
+            Start EventHandler
+            </summary>
+        </member>
+        <member name="M:FiroozehGameService.Utils.Event.Dispose">
+            <summary>
+            Dispose EventHandler
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Utils.EventCallerUtil">
+            <summary>
+            Represents Event In Game Service Observer
+            </summary>
+        </member>
+        <member name="M:FiroozehGameService.Utils.EventCallerUtil.CreateNewEvent(System.Int64)">
+            <summary>
+            CreateNewEvent by Observer
+            </summary>
+            <param name="interval">interval time</param>
+            <returns></returns>
         </member>
         <member name="T:FiroozehGameService.Utils.Serializer.Abstracts.BaseSerializer">
             <summary>

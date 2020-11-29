@@ -235,17 +235,8 @@ public class GameControllers : MonoBehaviour {
         TurnBasedEventHandlers.LeftRoom += OnLeaveRoom;
         TurnBasedEventHandlers.RoomMembersDetailReceived += OnRoomMembersDetailReceived;
         TurnBasedEventHandlers.CurrentTurnMemberReceived += OnCurrentTurnMember;
-        LogUtil.LogEventHandler += LogEventHandler;
     }
-
      
-
-
-     private void LogEventHandler(object sender, Log e)
-    {
-       Debug.LogError(e.Type + " ~ " + e.Txt);
-    }
-
 
     private void GameInit () {
         _markTabel = new int[9];
