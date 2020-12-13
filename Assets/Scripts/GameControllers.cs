@@ -229,7 +229,7 @@ public class GameControllers : MonoBehaviour {
         TurnBasedEventHandlers.JoinedRoom += OnJoinRoom;
         TurnBasedEventHandlers.Completed += OnCompleted;
         TurnBasedEventHandlers.AutoMatchUpdated += AutoMatchUpdated;
-        TurnBasedEventHandlers.Finished += OnFinished;
+        TurnBasedEventHandlers.VoteReceived += VoteReceived;
         TurnBasedEventHandlers.ChoosedNext += OnChooseNext;
         TurnBasedEventHandlers.TakeTurn += OnTakeTurn;
         TurnBasedEventHandlers.LeftRoom += OnLeaveRoom;
@@ -238,7 +238,7 @@ public class GameControllers : MonoBehaviour {
     }
      
 
-    private void GameInit () {
+     private void GameInit () {
         _markTabel = new int[9];
         _outcomes = new Dictionary<string, Outcome>();
 
@@ -352,7 +352,7 @@ public class GameControllers : MonoBehaviour {
             Result = "GameOver"
         });
         // Send Result To Server
-        await GameService.GSLive.TurnBased.Finish(_outcomes);
+        await GameService.GSLive.TurnBased.Vote(_outcomes);
 
         foreach (var button in Spaces)
             button.enabled = false;
@@ -470,19 +470,19 @@ public class GameControllers : MonoBehaviour {
       
     }
 
-    private async void OnFinished(object sender, Finish finish)
+    private async void VoteReceived(object sender, Vote vote)
     {
         try
         {
             var ok = false;
             // if All Data is Compatible -> Complete With Winner 
-            foreach (var outcome in finish.Outcomes)
-                foreach (var meOutcome in _outcomes)
-                    if (outcome.Key == meOutcome.Key && outcome.Value.Placement == meOutcome.Value.Placement)
-                        ok = true;
+            foreach (var outcome in vote.Outcomes)
+            foreach (var meOutcome in _outcomes)
+                if (outcome.Key == meOutcome.Key && outcome.Value.Placement == meOutcome.Value.Placement)
+                    ok = true;
                     
             if(ok)
-                await GameService.GSLive.TurnBased.Complete(finish.Outcomes.First(o => o.Value.Placement == 1).Key);
+                await GameService.GSLive.TurnBased.Complete(vote.Outcomes.First(o => o.Value.Placement == 1).Key);
             
         }
         catch (Exception e)
@@ -490,9 +490,10 @@ public class GameControllers : MonoBehaviour {
             Turn.text = "OnFinished Err : " + e.Message;
             Debug.LogError("OnFinished Err : " + e.Message);
         }
-       
+        
     }
 
+   
     private void OnCompleted(object sender, Complete complete)
     {
         try
