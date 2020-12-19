@@ -45,6 +45,10 @@ namespace Plugins.GameService.Utils.RealTimeUtil.Classes
         [BoxGroup("Observer Info (Set Automatically By Server)")]
         [ReadOnly]
         public bool isMine;
+        
+        [BoxGroup("Observer Info (Set Automatically By Server)")]
+        [ReadOnly]
+        public bool isAvailable;
 
         [BoxGroup("Add Your Component that You Want To Serialize")]
         [ValidateInput("CheckComponent", "The Component Must Implements IGsLiveSerializable")]
@@ -83,7 +87,12 @@ namespace Plugins.GameService.Utils.RealTimeUtil.Classes
         private void OnUpdate(object sender, EventUtil e)
         {
             if (serializableComponent == null) return;
-            SenderUtil.NetworkObserver(id,serializableComponent as IGsLiveSerializable);
+            if (FiroozehGameService.Core.GameService.GSLive.IsRealTimeAvailable())
+            {
+                SenderUtil.NetworkObserver(id, serializableComponent as IGsLiveSerializable);
+                isAvailable = true;
+            }
+            else isAvailable = false;
         }
         
 

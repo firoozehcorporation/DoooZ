@@ -210,6 +210,12 @@
             </summary>
             <value> return The Current Times</value>
         </member>
+        <member name="M:FiroozehGameService.Core.GameService.GetCurrentGame">
+            <summary>
+                This command Gets The Current Game
+            </summary>
+            <value> return The Current Game</value>
+        </member>
         <member name="M:FiroozehGameService.Core.GameService.CanLoginWithPhoneNumber">
             <summary>
                 This command Check Can Login With Phone Number
@@ -1522,6 +1528,35 @@
             Gets the Function ExecutionTime
             </summary>
         </member>
+        <member name="T:FiroozehGameService.Models.BasicApi.Game">
+            <summary>
+                Represents Game Data Model In Game Service Basic API
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.Game.Name">
+            <summary>
+                Gets the Game Name.
+            </summary>
+            <value>the Game Name</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.Game.Image">
+            <summary>
+                Gets the Game Cover URL.
+            </summary>
+            <value>the Game Cover URL</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.Game.Publisher">
+            <summary>
+                Gets the Game Publisher.
+            </summary>
+            <value>the Game Publisher</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.Game.OnlinePlayers">
+            <summary>
+                Gets the Game Online Players.
+            </summary>
+            <value>the Game Online Players</value>
+        </member>
         <member name="T:FiroozehGameService.Models.BasicApi.LeaderBoard">
             <summary>
                 Represents LeaderBoard Data Model In Game Service Basic API
@@ -1632,6 +1667,23 @@
                 Gets the Member Phone Number.
             </summary>
             <value>the Member Phone Number</value>
+        </member>
+        <member name="T:FiroozehGameService.Models.BasicApi.Publisher">
+            <summary>
+                Represents Publisher Data Model In Game Service Basic API
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.Publisher.Name">
+            <summary>
+                Gets the Game Name.
+            </summary>
+            <value>the Game Name</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.Publisher.Image">
+            <summary>
+                Gets the Game Cover URL.
+            </summary>
+            <value>the Game Cover URL</value>
         </member>
         <member name="T:FiroozehGameService.Models.BasicApi.Results`1">
             <summary>
@@ -2081,6 +2133,13 @@
                 Represents GameService RevokeActiveDevice HTTP Errors
                 Errors that occur in the following Functions:
                 <see cref="M:FiroozehGameService.Core.GameService.RevokeActiveDevice(System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Http.GetCurrentGame">
+            <summary>
+                Represents GameService GetCurrentGame HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GameService.GetCurrentGame" />
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social">

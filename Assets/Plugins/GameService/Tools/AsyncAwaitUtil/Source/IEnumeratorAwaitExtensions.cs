@@ -64,8 +64,7 @@ namespace Plugins.GameService.Tools.AsyncAwaitUtil.Source
                 InstructionWrappers.ResourceRequest(awaiter, instruction)));
             return awaiter;
         }
-        
-        
+
         public static SimpleCoroutineAwaiter<AssetBundle> GetAwaiter(this AssetBundleCreateRequest instruction)
         {
             var awaiter = new SimpleCoroutineAwaiter<AssetBundle>();

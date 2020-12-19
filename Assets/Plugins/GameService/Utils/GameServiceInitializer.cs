@@ -163,7 +163,8 @@ namespace Plugins.GameService.Utils
             GsLiveRealtime.Dispose();
             Debug.Log("GsLiveRealtime Dispose Called");
             
-            File.AppendAllText(_appPath + DebugPath + _logFile,EndLog);
+            if (EnableSaveDebugLogs)
+                File.AppendAllText(_appPath + DebugPath + _logFile,EndLog);
         }
 
         private void OnDebugReceived(object sender, FiroozehGameService.Models.EventArgs.Debug debug)
