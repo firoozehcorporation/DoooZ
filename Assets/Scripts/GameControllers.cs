@@ -24,6 +24,7 @@ using FiroozehGameService.Core;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.TB;
@@ -226,6 +227,7 @@ public class GameControllers : MonoBehaviour {
     {
         TurnBasedEventHandlers.SuccessfullyLogined += OnSuccessfullyLogined;
         TurnBasedEventHandlers.Error += OnError;
+        TurnBasedEventHandlers.Reconnected += Reconnected;
         TurnBasedEventHandlers.JoinedRoom += OnJoinRoom;
         TurnBasedEventHandlers.Completed += OnCompleted;
         TurnBasedEventHandlers.AutoMatchUpdated += AutoMatchUpdated;
@@ -237,7 +239,6 @@ public class GameControllers : MonoBehaviour {
         TurnBasedEventHandlers.CurrentTurnMemberReceived += OnCurrentTurnMember;
     }
      
-
      private void GameInit () {
         _markTabel = new int[9];
         _outcomes = new Dictionary<string, Outcome>();
@@ -362,6 +363,11 @@ public class GameControllers : MonoBehaviour {
     }
 
     
+    private void Reconnected(object sender, ReconnectStatus e)
+    {
+        Debug.Log("Reconnected : " + e);
+    }
+
     private void OnCurrentTurnMember(object sender, Member currentMember)
     {
         try

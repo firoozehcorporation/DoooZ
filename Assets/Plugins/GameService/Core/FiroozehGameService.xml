@@ -100,13 +100,14 @@
             </summary>
             <value> return Player Last Save </value>
         </member>
-        <member name="M:FiroozehGameService.Core.GameService.GetLeaderBoardDetails(System.String,System.Int32)">
+        <member name="M:FiroozehGameService.Core.GameService.GetLeaderBoardDetails(System.String,System.Int32,System.Boolean)">
             <summary>
                 With this command you can get a LeaderBoardDetails with the ID of the LeaderBoard list
                 you registered in the Developer panel.
             </summary>
             <param name="leaderBoardId">(Not NULL)The ID of leaderBoard you Want To get Detail</param>
             <param name="scoreLimit">(Min = 10,Max = 50) The Score List Limits</param>
+            <param name="onlyFriends"> if this option Enabled , returns the Friends Score </param>
             <value> return LeaderBoardDetails </value>
         </member>
         <member name="M:FiroozehGameService.Core.GameService.GetCurrentPlayerScore(System.String)">
@@ -275,6 +276,27 @@
             <param name="functionParameters">(NULLABLE)Specifies the Function Input Parameter Class that Set in Developers Panel</param>
             <param name="isPublic">Specifies the Function Visibility Type that Set in Developers Panel</param>
             <value> return Result in String </value>
+        </member>
+        <member name="M:FiroozehGameService.Core.GameService.GetActiveDevices">
+            <summary>
+                Get All Active Devices
+                You Can Get Active Devices to Revoke Some Devices Access
+            </summary>
+            <value> return Active Devices </value>
+        </member>
+        <member name="M:FiroozehGameService.Core.GameService.RevokeActiveDevice(System.String)">
+            <summary>
+                Revoke a Active Device with deviceId
+                You Can Get Active Devices to Revoke Some Devices Access
+            </summary>
+            <param name="deviceId">(NOTNULL)Specifies the device Id that you want to revoke</param>
+        </member>
+        <member name="M:FiroozehGameService.Core.GameService.ChangePassword(System.String,System.String)">
+            <summary>
+                Change Password With CurrentPassword and New One
+            </summary>
+            <param name="currentPassword">(NOTNULL)Specifies the Current Password </param>
+            <param name="newPassword">(NOTNULL)Specifies the New Password </param>
         </member>
         <member name="M:FiroozehGameService.Core.GameService.SendLoginCodeWithSms(System.String)">
             <summary>
@@ -567,6 +589,11 @@
                 Get Room Members Details
             </summary>
         </member>
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveRT.GetCurrentRoomInfo">
+            <summary>
+                Get Current Room Info
+            </summary>
+        </member>
         <member name="M:FiroozehGameService.Core.GSLive.GSLiveRT.GetInviteInbox">
             <summary>
                 Get Your Invite Inbox
@@ -652,22 +679,29 @@
             </summary>
             <param name="whoIsNext">(NULLABLE)Next Player's ID </param>
         </member>
-        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.SetProperty(System.String,System.String)">
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.SetProperty(FiroozehGameService.Models.Enums.GSLive.TB.PropertyType,System.String,System.String)">
             <summary>
                 Every Member can Set Properties to Sync Data With EachOthers
             </summary>
             <param name="key">(NOTNULL)  The Key Value</param>
             <param name="value">(NOTNULL) The Value of Key </param>
+            <param name="type">The Type of Property </param>
         </member>
-        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.RemoveProperty(System.String)">
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.RemoveProperty(FiroozehGameService.Models.Enums.GSLive.TB.PropertyType,System.String)">
             <summary>
                 Delete Properties And Sync it With EachOthers
             </summary>
             <param name="key">(NOTNULL) The Key Value</param>
+            <param name="type"> The Type of Property </param>
         </member>
-        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetProperties">
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetMemberProperties">
             <summary>
-                Get All Properties
+                Get All Member Properties
+            </summary>
+        </member>
+        <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetCurrentRoomInfo">
+            <summary>
+                Get Current Room Info
             </summary>
         </member>
         <member name="M:FiroozehGameService.Core.GSLive.GSLiveTB.LeaveRoom(System.String)">
@@ -771,11 +805,12 @@
                 Represents Social PartyOption
             </summary>
         </member>
-        <member name="M:FiroozehGameService.Core.Social.SocialOptions.PartyOption.#ctor(System.String,System.String,System.Byte[])">
+        <member name="M:FiroozehGameService.Core.Social.SocialOptions.PartyOption.#ctor(System.String,System.String,System.Int32,System.Byte[])">
             <summary>
                 Specifies the Party Options
                 <param name="name">(MIN = 5 , MAX = 32 characters) Specifies the Party Name</param>
                 <param name="description">(NULLABLE)(MIN = 3 , MAX = 120 characters) Specifies the Party Description</param>
+                <param name="maxMember">(MIN = 1 , MAX = 16) Specifies the Party Max Player</param>
                 <param name="logo">(NULLABLE) Specifies the Party Logo (BytesBuffer) </param>
             </summary>
         </member>
@@ -858,7 +893,7 @@
         </member>
         <member name="M:FiroozehGameService.Core.Social.Party.DeleteMemberVariable(System.String,System.String)">
             <summary>
-                Delete Party Member Variable with Variable Key
+                Delete Party Current Member Variable with Variable Key
                 The Current Member Can Delete Own Variable in Party
             </summary>
             <param name="partyId">(NOTNULL)The Party id</param>
@@ -866,7 +901,7 @@
         </member>
         <member name="M:FiroozehGameService.Core.Social.Party.DeleteMemberVariables(System.String)">
             <summary>
-                Delete Party Member Variables
+                Delete Party Current Member Variables
                 The Current Member Can Delete Own Variables in Party
             </summary>
             <param name="partyId">(NOTNULL)The Party id</param>
@@ -919,6 +954,7 @@
             </summary>
             <param name="partyId">(NOTNULL)The Party id</param>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:FiroozehGameService.Core.Social.Party.GetPartyJoinRequests(System.String,System.Int32,System.Int32)" -->
         <member name="T:FiroozehGameService.Core.Social.Social">
             <summary>
                 Represents GameService Social System
@@ -1059,6 +1095,11 @@
                 <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.AutoMatch(FiroozehGameService.Core.GSLive.GSLiveOption.AutoMatchOption)" />
             </summary>
         </member>
+        <member name="F:FiroozehGameService.Handlers.RealTimeEventHandlers.Reconnected">
+            <summary>
+                Calls When Current Player Try To Reconnect to Server
+            </summary>
+        </member>
         <member name="F:FiroozehGameService.Handlers.RealTimeEventHandlers.LeftRoom">
             <summary>
                 Calls When SomeOne Left the Current Room
@@ -1078,6 +1119,12 @@
             <summary>
                 Returns Current Room Members Detail  When Call The Following Function :
                 <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.GetRoomMembersDetail" />
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Handlers.RealTimeEventHandlers.CurrentRoomInfoReceived">
+            <summary>
+                Returns Room Info When Call The Following Function :
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.GetCurrentRoomInfo" />
             </summary>
         </member>
         <member name="T:FiroozehGameService.Handlers.CommandEventHandler">
@@ -1147,6 +1194,11 @@
                 <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.AutoMatch(FiroozehGameService.Core.GSLive.GSLiveOption.AutoMatchOption)" />
             </summary>
         </member>
+        <member name="F:FiroozehGameService.Handlers.TurnBasedEventHandlers.Reconnected">
+            <summary>
+                Calls When Current Player Reconnect to Server
+            </summary>
+        </member>
         <member name="F:FiroozehGameService.Handlers.TurnBasedEventHandlers.LeftRoom">
             <summary>
                 Calls When SomeOne Left the Current Room
@@ -1169,14 +1221,20 @@
         <member name="F:FiroozehGameService.Handlers.TurnBasedEventHandlers.PropertyUpdated">
             <summary>
                 Returns NewOrUpdate Property From Another Players When Call The Following Functions :
-                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.SetProperty(System.String,System.String)" />
-                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.RemoveProperty(System.String)" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.SetProperty(FiroozehGameService.Models.Enums.GSLive.TB.PropertyType,System.String,System.String)" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.RemoveProperty(FiroozehGameService.Models.Enums.GSLive.TB.PropertyType,System.String)" />
             </summary>
         </member>
-        <member name="F:FiroozehGameService.Handlers.TurnBasedEventHandlers.PropertiesReceived">
+        <member name="F:FiroozehGameService.Handlers.TurnBasedEventHandlers.MemberPropertiesReceived">
             <summary>
                 Returns Properties From Another Players When Call The Following Function :
-                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetProperties" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetMemberProperties" />
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Handlers.TurnBasedEventHandlers.CurrentRoomInfoReceived">
+            <summary>
+                Returns Room Info When Call The Following Function :
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetCurrentRoomInfo" />
             </summary>
         </member>
         <member name="F:FiroozehGameService.Handlers.TurnBasedEventHandlers.VoteReceived">
@@ -1260,6 +1318,53 @@
                 if the status is True You Can Unlock Achievement
             </summary>
             <value>the Achievement status</value>
+        </member>
+        <member name="T:FiroozehGameService.Models.BasicApi.ActiveDevice">
+            <summary>
+                Represents ActiveDevice Data Model In Game Service Basic API
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.ActiveDevice.DeviceId">
+            <summary>
+                Gets the DeviceID
+            </summary>
+            <value>the DeviceID</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.ActiveDevice.DeviceModel">
+            <summary>
+                Gets the Device Model
+            </summary>
+            <value>the Device Model</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.ActiveDevice.DeviceName">
+            <summary>
+                Gets the Device Name
+            </summary>
+            <value>the Device Name</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.ActiveDevice.GraphicsDeviceName">
+            <summary>
+                Gets the Device Graphics Name
+            </summary>
+            <value>the Device Graphics Name</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.ActiveDevice.OperatingSystem">
+            <summary>
+                Gets the Device Operating System
+            </summary>
+            <value>the Device Operating System</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.ActiveDevice.LastLoginTime">
+            <summary>
+                Gets the Last Login Time
+            </summary>
+            <value>the Last Login Time</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.ActiveDevice.FirstLoginTime">
+            <summary>
+                Gets the First Login Time
+            </summary>
+            <value>the First Login Time</value>
         </member>
         <member name="T:FiroozehGameService.Models.BasicApi.Buckets.BucketCore">
             <summary>
@@ -1618,9 +1723,15 @@
             <summary>
                 Gets the Event Extra Data
                 NOTE : Extra Data Is NULLABLE
-                USAGE : Available When Action is <see cref="F:FiroozehGameService.Models.Enums.EventAction.ChangeMemberRole" />
+                USAGE : Available When Action is <see cref="F:FiroozehGameService.Models.Enums.EventAction.ChangePartyMemberRole" />
             </summary>
             <value>the Event Extra Data</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.Social.Event.FromGame">
+            <summary>
+                Gets the Game That Creates this Event.
+            </summary>
+            <value>the Game</value>
         </member>
         <member name="F:FiroozehGameService.Models.BasicApi.Social.Event.FromMember">
             <summary>
@@ -1699,6 +1810,18 @@
                 Gets the Party Logo URL.
             </summary>
             <value>the Party Logo URL</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.Social.Party.MaxMember">
+            <summary>
+                Gets the Max Member Count.
+            </summary>
+            <value>the Max Member Count</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.BasicApi.Social.Party.MemberCount">
+            <summary>
+                Gets the Member Count.
+            </summary>
+            <value>the Member Count</value>
         </member>
         <member name="F:FiroozehGameService.Models.BasicApi.Social.Party.Name">
             <summary>
@@ -1851,9 +1974,9 @@
             <summary>
                 Represents GameService Authorize HTTP Errors
                 Errors that occur in the following Functions :
-                <see cref="M:FiroozehGameService.Core.GameService.Login" />
-                <see cref="M:FiroozehGameService.Core.GameService.Login(System.String)" />
-                <see cref="M:FiroozehGameService.Core.GameService.Login(System.String,System.String)" />
+                <see cref="T:FiroozehGameService.Models.BasicApi.Login" />
+                <see cref="T:FiroozehGameService.Models.BasicApi.Login" />
+                <see cref="T:FiroozehGameService.Models.BasicApi.Login" />
                 <see cref="M:FiroozehGameService.Core.GameService.SignUp(System.String,System.String,System.String)" />
             </summary>
         </member>
@@ -1873,12 +1996,12 @@
                 <see cref="M:FiroozehGameService.Core.GameService.SignUp(System.String,System.String,System.String)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Http.LastLoginInfo">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Http.GetLastLoginMemberInfo">
             <inheritdoc />
             <summary>
-                Represents GameService LastLoginInfo HTTP Errors
+                Represents GameService GetLastLoginMemberInfo HTTP Errors
                 Errors that occur in the following Functions :
-                <see cref="!:GameService.LastLoginInfo()" />
+                <see cref="M:FiroozehGameService.Core.GameService.GetLastLoginMemberInfo" />
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Http.Save">
@@ -1888,7 +2011,7 @@
                 Errors that occur in the following Functions :
                 <see cref="M:FiroozehGameService.Core.GameService.SaveGame(System.String,System.Object)" />
                 <see cref="M:FiroozehGameService.Core.GameService.GetSaveGame``1" />
-                <see cref="!:GameService.RemoveSave()" />
+                <see cref="M:FiroozehGameService.Core.GameService.RemoveLastSave" />
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Http.Achievement">
@@ -1906,8 +2029,8 @@
                 Represents GameService Leaderboard HTTP Errors
                 Errors that occur in the following Functions :
                 <see cref="M:FiroozehGameService.Core.GameService.GetLeaderBoards" />
-                <see cref="M:FiroozehGameService.Core.GameService.GetLeaderBoardDetails(System.String,System.Int32)" />
-                <see cref="!:GameService.GetMyScore()" />
+                <see cref="M:FiroozehGameService.Core.GameService.GetLeaderBoardDetails(System.String,System.Int32,System.Boolean)" />
+                <see cref="M:FiroozehGameService.Core.GameService.GetCurrentPlayerScore(System.String)" />
                 <see cref="M:FiroozehGameService.Core.GameService.SubmitScore(System.String,System.Int32)" />
             </summary>
         </member>
@@ -1939,160 +2062,352 @@
                 <see cref="M:FiroozehGameService.Core.GameService.EditCurrentPlayerProfile(FiroozehGameService.Models.BasicApi.EditUserProfile)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Http.ChangePassword">
             <summary>
-                Represents All GameService Errors in Command Requests
-            </summary>
-        </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.Internal">
-            <summary>
-                Represents GameService Command Internal Errors
-            </summary>
-        </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.Authorize">
-            <inheritdoc />
-            <summary>
-                Represents GameService Authorize Command Errors
-                Errors that occur in initial connection
-            </summary>
-        </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.AutoMatch">
-            <summary>
-                Represents GameService AutoMatch Errors
+                Represents GameService ChangePassword HTTP Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.AutoMatch(object)" />
+                <see cref="M:FiroozehGameService.Core.GameService.ChangePassword(System.String,System.String)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.CancelAutoMatch">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Http.GetActiveDevices">
             <summary>
-                Represents GameService CancelAutoMatch Errors
+                Represents GameService GetActiveDevices HTTP Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.CancelAutoMatch()" />
+                <see cref="M:FiroozehGameService.Core.GameService.GetActiveDevices" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.CreateRoom">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Http.RevokeActiveDevice">
             <summary>
-                Represents GameService CreateRoom Errors
+                Represents GameService RevokeActiveDevice HTTP Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.CreateRoom()" />
+                <see cref="M:FiroozehGameService.Core.GameService.RevokeActiveDevice(System.String)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.GetAvailableRooms">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social">
             <summary>
-                Represents GameService GetAvailableRooms Errors
-                Errors that occur in the following Functions:
-                <see cref="!:GameService.GetAvailableRooms(string)" />
+                Represents All GameService Errors in Social Requests
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.JoinRoom">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Friend">
             <summary>
-                Represents GameService JoinRoom Errors
-                Errors that occur in the following Functions:
-                <see cref="!:GameService.JoinRoom(string)" />
+                Represents All GameService Friend Errors in Social Requests
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.InviteUser">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Friend.SendFriendRequest">
             <summary>
-                Represents GameService InviteUser Errors
+                Represents GameService SendFriendRequest HTTP Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.InviteUser(string, string)" />
+                <see cref="M:FiroozehGameService.Core.Social.Friend.SendFriendRequest(System.String)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.GetInviteInbox">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Friend.AcceptFriendRequest">
             <summary>
-                Represents GameService GetInviteInbox Errors
+                Represents GameService AcceptFriendRequest HTTP Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.GetInviteInbox()" />
+                <see cref="M:FiroozehGameService.Core.Social.Friend.AcceptFriendRequest(System.String)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.AcceptInvite">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Friend.DeleteFriend">
             <summary>
-                Represents GameService AcceptInvite Errors
+                Represents GameService DeleteFriend HTTP Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.AcceptInvite(string)" />
+                <see cref="M:FiroozehGameService.Core.Social.Friend.DeleteFriend(System.String)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.SubscribeChannel">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party">
+            <summary>
+                Represents All GameService Party Errors in Social Requests
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.GetPartyInfo">
+            <summary>
+                Represents GameService GetPartyInfo HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.GetPartyInfo(System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.EditParty">
+            <summary>
+                Represents GameService EditParty HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.EditParty(System.String,FiroozehGameService.Core.Social.SocialOptions.PartyOption)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.AddFriend">
+            <summary>
+                Represents GameService AddFriend HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.AddFriend(System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.JoinRequest">
+            <summary>
+                Represents GameService JoinRequest HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.JoinRequest(System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.AcceptJoinRequest">
+            <summary>
+                Represents GameService AcceptJoinRequest HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.AcceptJoinRequest(System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.RejectJoinRequest">
+            <summary>
+                Represents GameService RejectJoinRequest HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.RejectJoinRequest(System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.LeftParty">
+            <summary>
+                Represents GameService LeftParty HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.LeftParty(System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.KickMember">
+            <summary>
+                Represents GameService KickMember HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.KickMember(System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.SetOrUpdateRole">
+            <summary>
+                Represents GameService SetOrUpdateRole HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.SetOrUpdateRole(System.String,System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.SetOrUpdateMemberVariable">
+            <summary>
+                Represents GameService SetOrUpdateMemberVariable HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.SetOrUpdateMemberVariable(System.String,System.Collections.Generic.KeyValuePair{System.String,System.String})" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.DeleteMemberVariable">
+            <summary>
+                Represents GameService DeleteVariable HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.DeleteVariable(System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.SetOrUpdateVariable">
+            <summary>
+                Represents GameService SetOrUpdateVariable HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.SetOrUpdateVariable(System.String,System.Collections.Generic.KeyValuePair{System.String,System.String})" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.DeleteVariable">
+            <summary>
+                Represents GameService DeleteVariable HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.DeleteVariable(System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.DeleteVariables">
+            <summary>
+                Represents GameService DeleteVariables HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.DeleteVariables(System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Social.Party.DeleteMemberVariables">
+            <summary>
+                Represents GameService DeleteMemberVariables HTTP Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.Social.Party.DeleteMemberVariables(System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive">
+            <summary>
+                Represents All GameService Errors in GSLive Requests
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Internal">
+            <summary>
+                Represents All GameService Internal Errors in GSLive
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Chat">
+            <summary>
+                Represents All GameService Errors in Chat Requests
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Chat.SubscribeChannel">
             <summary>
                 Represents GameService SubscribeChannel Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.SubscribeChannel(string)" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveChat.SubscribeChannel(System.String)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.SendChannelMessage">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Chat.SendChannelMessage">
             <summary>
                 Represents GameService SendChannelMessage Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.SendChannelMessage(string, string)" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveChat.SendChannelMessage(System.String,System.String)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Command.UnSubscribeChannel">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Chat.UnSubscribeChannel">
             <summary>
                 Represents GameService UnSubscribeChannel Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.UnSubscribeChannel(string)" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveChat.UnSubscribeChannel(System.String)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.TurnBase">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.TurnBase">
             <summary>
                 Represents All GameService Errors in TurnBase Requests
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.TurnBase.Internal">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.TurnBase.AutoMatch">
             <summary>
-                Represents GameService Turnbase Internal Errors
-            </summary>
-        </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.TurnBase.Authorize">
-            <inheritdoc />
-            <summary>
-                Represents GameService Authorize TurnBase Errors
-                Errors that occur in initial connection
-            </summary>
-        </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.TurnBase.ModifyValue">
-            <summary>
-                Represents GameService ModifyValue Errors
+                Represents GameService AutoMatch Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.ModifyValue(string)" />
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.AutoMatch(FiroozehGameService.Core.GSLive.GSLiveOption.AutoMatchOption)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Realtime">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.TurnBase.CancelAutoMatch">
+            <summary>
+                Represents GameService CancelAutoMatch Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.CancelAutoMatch" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.TurnBase.CreateRoom">
+            <summary>
+                Represents GameService CreateRoom Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.CreateRoom(FiroozehGameService.Core.GSLive.GSLiveOption.CreateRoomOption)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.TurnBase.GetAvailableRooms">
+            <summary>
+                Represents GameService GetAvailableRooms Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetAvailableRooms(System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.TurnBase.JoinRoom">
+            <summary>
+                Represents GameService JoinRoom Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.JoinRoom(System.String,System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.TurnBase.InviteUser">
+            <summary>
+                Represents GameService InviteUser Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.InviteUser(System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.TurnBase.GetInviteInbox">
+            <summary>
+                Represents GameService GetInviteInbox Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.GetInviteInbox" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.TurnBase.AcceptInvite">
+            <summary>
+                Represents GameService AcceptInvite Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.AcceptInvite(System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.TurnBase.SetProperty">
+            <summary>
+                Represents GameService SetProperty Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveTB.SetProperty(FiroozehGameService.Models.Enums.GSLive.TB.PropertyType,System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime">
             <summary>
                 Represents All GameService Errors in Realtime Requests
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Realtime.Internal">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.AutoMatch">
             <summary>
-                Represents GameService Realtime Internal Errors
+                Represents GameService AutoMatch Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.AutoMatch(FiroozehGameService.Core.GSLive.GSLiveOption.AutoMatchOption)" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Realtime.Authorize">
-            <inheritdoc />
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.CancelAutoMatch">
             <summary>
-                Represents GameService Authorize Realtime Errors
-                Errors that occur in initial connection
+                Represents GameService CancelAutoMatch Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.CancelAutoMatch" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Realtime.Instantitate">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.CreateRoom">
+            <summary>
+                Represents GameService CreateRoom Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.CreateRoom(FiroozehGameService.Core.GSLive.GSLiveOption.CreateRoomOption)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.GetAvailableRooms">
+            <summary>
+                Represents GameService GetAvailableRooms Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.GetAvailableRooms(System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.JoinRoom">
+            <summary>
+                Represents GameService JoinRoom Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.JoinRoom(System.String,System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.InviteUser">
+            <summary>
+                Represents GameService InviteUser Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.InviteUser(System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.GetInviteInbox">
+            <summary>
+                Represents GameService GetInviteInbox Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.GetInviteInbox" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.AcceptInvite">
+            <summary>
+                Represents GameService AcceptInvite Errors
+                Errors that occur in the following Functions:
+                <see cref="M:FiroozehGameService.Core.GSLive.GSLiveRT.AcceptInvite(System.String,System.String)" />
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.Instantitate">
             <summary>
                 Represents GameService Instantitate Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.Instantitate(string)" />
+                <see cref="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.Instantitate" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Realtime.RunFunction">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.RunFunction">
             <summary>
                 Represents GameService RunFunction Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.RunFunction(string, Object, []Object)" />
+                <see cref="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.RunFunction" />
             </summary>
         </member>
-        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.Realtime.SetProperty">
+        <member name="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.SetProperty">
             <summary>
                 Represents GameService SetProperty Errors
                 Errors that occur in the following Functions:
-                <see cref="!:GameService.SetProperty(Object)" />
+                <see cref="T:FiroozehGameService.Models.Consts.GameServiceErrors.GSLive.Realtime.SetProperty" />
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Enums.BucketOwnershipTypes">
@@ -2180,19 +2495,24 @@
             Accept Friend Request Action
             </summary>
         </member>
-        <member name="F:FiroozehGameService.Models.Enums.EventAction.AcceptJoinRequest">
+        <member name="F:FiroozehGameService.Models.Enums.EventAction.AcceptJoinPartyRequest">
             <summary>
             Accept Friend Request Action
             </summary>
         </member>
-        <member name="F:FiroozehGameService.Models.Enums.EventAction.KickMember">
+        <member name="F:FiroozehGameService.Models.Enums.EventAction.KickPartyMember">
             <summary>
             kick Member Action
             </summary>
         </member>
-        <member name="F:FiroozehGameService.Models.Enums.EventAction.ChangeMemberRole">
+        <member name="F:FiroozehGameService.Models.Enums.EventAction.ChangePartyMemberRole">
             <summary>
             Change Member Role Action
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.EventAction.AddToPartyByFriend">
+            <summary>
+            Add To Party By Friend Action
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Enums.GProtocolSendType">
@@ -2281,6 +2601,21 @@
             Sets When Current Member Join From AutoMatch
             </summary>
         </member>
+        <member name="T:FiroozehGameService.Models.Enums.GSLive.ReconnectStatus">
+            <summary>
+                Represents ReconnectStatus Of Reconnect
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.ReconnectStatus.Connecting">
+            <summary>
+            The Connecting Status, Current Client Try To Reconnect
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.ReconnectStatus.Connected">
+            <summary>
+            The Connected Status, Current Client Connected To Server
+            </summary>
+        </member>
         <member name="T:FiroozehGameService.Models.Enums.GSLive.RT.MessageType">
             <summary>
                 Represents MessageType Of RealTime System
@@ -2309,6 +2644,21 @@
         <member name="F:FiroozehGameService.Models.Enums.GSLive.TB.PropertyAction.Delete">
             <summary>
             Delete the Value of Key
+            </summary>
+        </member>
+        <member name="T:FiroozehGameService.Models.Enums.GSLive.TB.PropertyType">
+            <summary>
+            Represents Game Service TurnBased Property Types
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.TB.PropertyType.Room">
+            <summary>
+            Room Property
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Enums.GSLive.TB.PropertyType.Member">
+            <summary>
+            Member Property
             </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Enums.LogType">
@@ -2671,6 +3021,13 @@
             </summary>
             <value>the Member User Data</value>
         </member>
+        <member name="F:FiroozehGameService.Models.GSLive.Member.IsOnline">
+            <summary>
+                Gets the Member Online Status.
+                this Property Only Available in <see cref="M:FiroozehGameService.Core.GameService.GetMemberData(System.String)"/> and  <see cref="M:FiroozehGameService.Core.GameService.GetCurrentPlayer"/>
+            </summary>
+            <value>the Member Online Status</value>
+        </member>
         <member name="T:FiroozehGameService.Models.GSLive.Room">
             <summary>
                 Represents Room Data Model In GameService MultiPlayer System (GSLive)
@@ -2818,11 +3175,23 @@
             </summary>
             <value>the Room Role Value</value>
         </member>
-        <member name="F:FiroozehGameService.Models.GSLive.RoomData.Status">
+        <member name="F:FiroozehGameService.Models.GSLive.RoomData.IsPersist">
             <summary>
-                Gets the Room Status Value.
+                Gets the Room Persist Status.
             </summary>
-            <value>the Room Status Value</value>
+            <value>the Room Persist Status</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.GSLive.RoomData.Variables">
+            <summary>
+                Gets the Room Variables.
+            </summary>
+            <value>the Room Variables</value>
+        </member>
+        <member name="F:FiroozehGameService.Models.GSLive.RoomData.CreateTime">
+            <summary>
+                Gets the Room Create Time.
+            </summary>
+            <value>the Room Create Time</value>
         </member>
         <member name="T:FiroozehGameService.Models.GSLive.RT.EventData">
             <summary>
@@ -2994,11 +3363,18 @@
              Represents PropertyPayload Data Model In GameService TurnBased MultiPlayer System (GSLive)
             </summary>
         </member>
+        <member name="F:FiroozehGameService.Models.GSLive.TB.PropertyPayload.Type">
+            <summary>
+                Gets the Property Type.
+            </summary>
+            <value>the PropertyPayload Type</value>
+            <see cref="T:FiroozehGameService.Models.Enums.GSLive.TB.PropertyType" />
+        </member>
         <member name="F:FiroozehGameService.Models.GSLive.TB.PropertyPayload.Action">
             <summary>
-                Gets the Property Action Type.
+                Gets the Property Action
             </summary>
-            <value>the PropertyPayload Action Type</value>
+            <value>the PropertyPayload Action</value>
             <see cref="T:FiroozehGameService.Models.Enums.GSLive.TB.PropertyAction" />
         </member>
         <member name="F:FiroozehGameService.Models.GSLive.TB.PropertyPayload.Owner">
@@ -3116,6 +3492,31 @@
                 Check DeviceTimeValid
             </summary>
             <value>Returns True if Device Time Is Valid(not grater than 2 sec With Server)</value>
+        </member>
+        <member name="T:FiroozehGameService.Models.Internal.InternalPropertyAction">
+            <summary>
+            Represents Game Service TurnBased Property Actions
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Internal.InternalPropertyAction.MemberSetOrUpdate">
+            <summary>
+            SetOrUpdate the Value of Key
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Internal.InternalPropertyAction.MemberDelete">
+            <summary>
+            Delete the Value of Key
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Internal.InternalPropertyAction.RoomSetOrUpdate">
+            <summary>
+            SetOrUpdate the Value of Key
+            </summary>
+        </member>
+        <member name="F:FiroozehGameService.Models.Internal.InternalPropertyAction.RoomDelete">
+            <summary>
+            Delete the Value of Key
+            </summary>
         </member>
         <member name="T:FiroozehGameService.Models.Internal.SystemInfo">
             <summary>
