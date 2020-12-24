@@ -970,12 +970,12 @@ MonoBehaviour:
   ClientSecret: 8mic0z5mddcbdo7k40vh2r
   RealTimeUtilEnabled: 0
   DebugSystemEnabled: 1
-  EnableDebugLogger: 1
+  EnableDebugLogger: 0
   EnableErrorLogger: 1
   EnableExceptionLogger: 1
   EnableDebugLocations: 0
   DebugLocations: 
-  EnableSaveDebugLogs: 1
+  EnableSaveDebugLogs: 0
 --- !u!1 &243444927
 GameObject:
   m_ObjectHideFlags: 0
