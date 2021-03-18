@@ -3,11 +3,23 @@
 All notable changes to this project will be documented in this file.
 
 
+
+## [1.3.0] Alpha - 2021-02-26
+
+### Added
+
+- Added Room Property Functions
+
+
+
+
+
 ## [1.2.1] Alpha - 2020-12-19
 
 ### Fixed
 
 - Fixed Code
+
 
 
 

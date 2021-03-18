@@ -39,7 +39,7 @@ namespace Handlers
             var dataToSend = JsonConvert.SerializeObject(turnData);
             
             if(GameService.GSLive.IsTurnBasedAvailable())
-               await GameService.GSLive.TurnBased.TakeTurn(dataToSend, opponentId);
+               await GameService.GSLive.TurnBased().TakeTurn(dataToSend, opponentId);
         }
 
     }

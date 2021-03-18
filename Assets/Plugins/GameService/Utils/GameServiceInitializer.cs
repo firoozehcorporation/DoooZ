@@ -48,8 +48,6 @@ namespace Plugins.GameService.Utils
         public bool RealTimeUtilEnabled;
         
         
-        
-        
         [BoxGroup("Debug System Configuration")]
         [OnValueChanged("OnDebugValueChanged")]
         public bool DebugSystemEnabled;
@@ -147,7 +145,7 @@ namespace Plugins.GameService.Utils
             }
 
 
-            var config = new GameServiceClientConfiguration(ClientId,ClientSecret,systemInfo);
+            var config = new GameServiceClientConfiguration(ClientId.Trim(),ClientSecret.Trim(),systemInfo);
             FiroozehGameService.Core.GameService.ConfigurationInstance(config);
 
             Debug.Log("GameService Version : "+FiroozehGameService.Core.GameService.Version()+" Initialized");

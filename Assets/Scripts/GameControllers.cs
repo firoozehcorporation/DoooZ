@@ -28,13 +28,13 @@ using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.TB;
-using FiroozehGameService.Utils;
 using Handlers;
 using Models;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
+using Debug = UnityEngine.Debug;
 
 /**
 * @author Alireza Ghodrati
@@ -102,7 +102,8 @@ public class GameControllers : MonoBehaviour {
         }
       
     }
-    
+
+
     // Update is called once per frame
     void Update ()
     {
@@ -128,7 +129,8 @@ public class GameControllers : MonoBehaviour {
     /// Connect To GameService -> Login Or SignUp
     /// It May Throw Exception
     /// </summary>
-    private async Task ConnectToGamesService () {
+    private async Task ConnectToGamesService ()
+    {
         //connecting to GamesService
         Status.text = "Status : Connecting...";
         startGameBtn.interactable = false;
@@ -150,7 +152,7 @@ public class GameControllers : MonoBehaviour {
         {
             try
             {
-                await GameService.Login(FileUtil.GetUserToken());
+                await GameService.LoginOrSignUp.LoginWithToken(FileUtil.GetUserToken());
                 
                 // Disable LoginUI
                 startMenu.enabled = true;
@@ -186,7 +188,7 @@ public class GameControllers : MonoBehaviour {
                             LoginErr.text = "Invalid Input!";
                         else
                         {
-                            var userToken = await GameService.SignUp(nickName, email, pass);
+                            var userToken = await GameService.LoginOrSignUp.SignUp(nickName, email, pass);
                             FileUtil.SaveUserToken(userToken);
                         }
 
@@ -200,7 +202,7 @@ public class GameControllers : MonoBehaviour {
                             LoginErr.text = "Invalid Input!";
                         else
                         {
-                            var userToken = await GameService.Login(email, pass);
+                            var userToken = await GameService.LoginOrSignUp.Login(email, pass);
                             FileUtil.SaveUserToken(userToken);
                             
                             // Disable LoginUI
@@ -237,7 +239,8 @@ public class GameControllers : MonoBehaviour {
         TurnBasedEventHandlers.RoomMembersDetailReceived += OnRoomMembersDetailReceived;
         TurnBasedEventHandlers.CurrentTurnMemberReceived += OnCurrentTurnMember;
     }
-     
+    
+
      private void GameInit () {
         _markTabel = new int[9];
         _outcomes = new Dictionary<string, Outcome>();
@@ -352,7 +355,7 @@ public class GameControllers : MonoBehaviour {
             Result = "GameOver"
         });
         // Send Result To Server
-        await GameService.GSLive.TurnBased.Vote(_outcomes);
+        await GameService.GSLive.TurnBased().Vote(_outcomes);
 
         foreach (var button in Spaces)
             button.enabled = false;
@@ -362,9 +365,9 @@ public class GameControllers : MonoBehaviour {
     }
 
     
-    private void Reconnected(object sender, ReconnectStatus e)
+    private void Reconnected(object sender, ReconnectStatus status)
     {
-        Debug.Log("Reconnected : " + e);
+        Debug.Log("Reconnected : " + status);
     }
 
     private void OnCurrentTurnMember(object sender, Member currentMember)
@@ -487,7 +490,7 @@ public class GameControllers : MonoBehaviour {
                     ok = true;
                     
             if(ok)
-                await GameService.GSLive.TurnBased.Complete(vote.Outcomes.First(o => o.Value.Placement == 1).Key);
+                await GameService.GSLive.TurnBased().Complete(vote.Outcomes.First(o => o.Value.Placement == 1).Key);
             
         }
         catch (Exception e)
@@ -537,11 +540,11 @@ public class GameControllers : MonoBehaviour {
                     
             // Get Players Info
             if(_me == null || _opponent == null)
-                await GameService.GSLive.TurnBased.GetRoomMembersDetail();
+                await GameService.GSLive.TurnBased().GetRoomMembersDetail();
 
             // Get CurrentTurn Info
             if (_currentTurnMember == null)
-                await GameService.GSLive.TurnBased.GetCurrentTurnMember();
+                await GameService.GSLive.TurnBased().GetCurrentTurnMember();
         }
         catch (Exception exception)
         {
@@ -572,7 +575,7 @@ public class GameControllers : MonoBehaviour {
                 if (GameService.GSLive.IsCommandAvailable())
                 {
                     isMatchmaking = true;
-                    await GameService.GSLive.TurnBased.AutoMatch(
+                    await GameService.GSLive.TurnBased().AutoMatch(
                         new GSLiveOption.AutoMatchOption("partner", 2, 2, false));
 
                     // go to waiting ui
@@ -598,6 +601,7 @@ public class GameControllers : MonoBehaviour {
     
     private void AutoMatchUpdated(object sender, AutoMatchEvent e)
     {
+        Debug.Log("AutoMatchUpdated :" + e.Status);
         foreach (var member in e.Players)
         {
             Debug.Log(member.User.Name);
@@ -618,7 +622,7 @@ public class GameControllers : MonoBehaviour {
         _xPlayerScore = 0;
         
         // Leave Game
-        await GameService.GSLive.TurnBased.LeaveRoom();
+        await GameService.GSLive.TurnBased().LeaveRoom();
 
         Turn.text = null;
         _outcomes.Clear();
@@ -639,7 +643,5 @@ public class GameControllers : MonoBehaviour {
         for (var i = 0; i < _markTabel.Length; i++) 
             _markTabel[i] = -100; //noBody
     }
-    
-
 }
 
