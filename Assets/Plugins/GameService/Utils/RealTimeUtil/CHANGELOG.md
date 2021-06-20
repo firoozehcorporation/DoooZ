@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.4.0] Alpha - 2021-04-29
+
+### Added
+
+- Added Packet Lost
+
+### Changed
+
+- Changed Ping To RoundTripTime (RTT)
+
 
 ## [1.3.0] Alpha - 2021-02-26
 

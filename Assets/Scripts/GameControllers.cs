@@ -230,7 +230,7 @@ public class GameControllers : MonoBehaviour {
         TurnBasedEventHandlers.Error += OnError;
         TurnBasedEventHandlers.Reconnected += Reconnected;
         TurnBasedEventHandlers.JoinedRoom += OnJoinRoom;
-        TurnBasedEventHandlers.Completed += OnCompleted;
+        TurnBasedEventHandlers.AcceptVoteReceived += AcceptVoteReceived;
         TurnBasedEventHandlers.AutoMatchUpdated += AutoMatchUpdated;
         TurnBasedEventHandlers.VoteReceived += VoteReceived;
         TurnBasedEventHandlers.ChoosedNext += OnChooseNext;
@@ -239,7 +239,8 @@ public class GameControllers : MonoBehaviour {
         TurnBasedEventHandlers.RoomMembersDetailReceived += OnRoomMembersDetailReceived;
         TurnBasedEventHandlers.CurrentTurnMemberReceived += OnCurrentTurnMember;
     }
-    
+     
+
 
      private void GameInit () {
         _markTabel = new int[9];
@@ -336,11 +337,10 @@ public class GameControllers : MonoBehaviour {
       
         if (_whoTurn == 0) {
             _xPlayerScore++;
-            xPlayerTextScore.text = _xPlayerScore.ToString ();
+            xPlayerTextScore.text = _xPlayerScore.ToString();
         } else {
             _oPlayerScore++;
-            oPlayerTextScore.text = _oPlayerScore.ToString ();
-          
+            oPlayerTextScore.text = _oPlayerScore.ToString();
         }
         
          
@@ -490,19 +490,19 @@ public class GameControllers : MonoBehaviour {
                     ok = true;
                     
             if(ok)
-                await GameService.GSLive.TurnBased().Complete(vote.Outcomes.First(o => o.Value.Placement == 1).Key);
+                await GameService.GSLive.TurnBased().AcceptVote(vote.MemberFinish.Id);
             
         }
         catch (Exception e)
         {
-            Turn.text = "OnFinished Err : " + e.Message;
-            Debug.LogError("OnFinished Err : " + e.Message);
+            Turn.text = "VoteReceived Err : " + e.Message;
+            Debug.LogError("VoteReceived Err : " + e.Message);
         }
         
     }
 
    
-    private void OnCompleted(object sender, Complete complete)
+    private void AcceptVoteReceived(object sender, AcceptVote acceptVote)
     {
         try
         {
@@ -510,14 +510,13 @@ public class GameControllers : MonoBehaviour {
             RestartGame.GetComponent<Button>().onClick.AddListener(ResetGame);
             // Show Winner
             Turn.color = Color.magenta;
-            Turn.text = complete.Result.Any(o => o.Key == _me.Id && o.Value.Placement == 1) ? "You wins!" : "Opponent wins!";
+            Turn.text = acceptVote.Result.Any(o => o.Key == _me.Id && o.Value.Placement == 1) ? "You wins!" : "Opponent wins!";
         }
         catch (Exception e)
         {
-            Turn.text = "OnCompleted Err : " + e.Message;
-            Debug.LogError("OnCompleted Err : " + e.Message);
+            Turn.text = "AcceptVoteReceived Err : " + e.Message;
+            Debug.LogError("AcceptVoteReceived Err : " + e.Message);
         }
-       
     }
 
     private async void OnJoinRoom(object sender, JoinEvent e)
@@ -577,7 +576,7 @@ public class GameControllers : MonoBehaviour {
                     isMatchmaking = true;
                     await GameService.GSLive.TurnBased().AutoMatch(
                         new GSLiveOption.AutoMatchOption("partner", 2, 2, false));
-
+                    
                     // go to waiting ui
                     startGameBtn.interactable = false;
                     startMenuText.text = "MatchMaking...";
@@ -609,7 +608,7 @@ public class GameControllers : MonoBehaviour {
        
     }
 
-    private async void ResetGame()
+    private void ResetGame()
     {
         // Show MainUI
         startMenu.enabled = true;
@@ -621,9 +620,6 @@ public class GameControllers : MonoBehaviour {
         _oPlayerScore = 0;
         _xPlayerScore = 0;
         
-        // Leave Game
-        await GameService.GSLive.TurnBased().LeaveRoom();
-
         Turn.text = null;
         _outcomes.Clear();
         _me = null;

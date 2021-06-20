@@ -969,10 +969,10 @@ MonoBehaviour:
   ClientId: doozid
   ClientSecret: 8mic0z5mddcbdo7k40vh2r
   RealTimeUtilEnabled: 0
-  DebugSystemEnabled: 1
+  DebugSystemEnabled: 0
   EnableDebugLogger: 0
-  EnableErrorLogger: 1
-  EnableExceptionLogger: 1
+  EnableErrorLogger: 0
+  EnableExceptionLogger: 0
   EnableDebugLocations: 0
   DebugLocations: 
   EnableSaveDebugLogs: 0
