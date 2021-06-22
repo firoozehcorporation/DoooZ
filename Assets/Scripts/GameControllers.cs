@@ -322,7 +322,7 @@ public class GameControllers : MonoBehaviour {
         }
     }
 
-    private async Task<bool> WinnerCheck (Member winner,Member loser) {
+    private async Task WinnerCheck(Member winner, Member loser) {
         var s1 = _markTabel[0] + _markTabel[1] + _markTabel[2];
         var s2 = _markTabel[3] + _markTabel[4] + _markTabel[5];
         var s3 = _markTabel[6] + _markTabel[7] + _markTabel[8];
@@ -333,8 +333,39 @@ public class GameControllers : MonoBehaviour {
         var s8 = _markTabel[0] + _markTabel[4] + _markTabel[6];
        
         var results = new[] { s1, s2, s3, s4, s5, s6, s7, s8 };
-        if (results.All(t => t != 3 * (_whoTurn + 1))) return false;
-      
+        
+        var isDraw = _markTabel.All(m => m != -100);
+        
+        if (!isDraw && results.All(t => t != 3 * (_whoTurn + 1))) return;
+
+        if (isDraw)
+        {
+            _outcomes.Add(winner.Id,new Outcome
+            {
+                Placement = 0,
+                Result = "Draw"
+            });
+            _outcomes.Add(loser.Id,new Outcome
+            {
+                Placement = 0,
+                Result = "Draw"
+            });
+        }
+        else
+        {
+            _outcomes.Add(winner.Id,new Outcome
+            {
+                Placement = 1,
+                Result = "Win"
+            });
+            _outcomes.Add(loser.Id,new Outcome
+            {
+                Placement = 2,
+                Result = "GameOver"
+            });
+        }
+        
+
         if (_whoTurn == 0) {
             _xPlayerScore++;
             xPlayerTextScore.text = _xPlayerScore.ToString();
@@ -343,25 +374,11 @@ public class GameControllers : MonoBehaviour {
             oPlayerTextScore.text = _oPlayerScore.ToString();
         }
         
-         
-        _outcomes.Add(winner.Id,new Outcome
-        {
-            Placement = 1,
-            Result = "Win"
-        });
-        _outcomes.Add(loser.Id,new Outcome
-        {
-            Placement = 2,
-            Result = "GameOver"
-        });
         // Send Result To Server
         await GameService.GSLive.TurnBased().Vote(_outcomes);
 
         foreach (var button in Spaces)
             button.enabled = false;
-
-        return true;
-
     }
 
     
@@ -482,15 +499,20 @@ public class GameControllers : MonoBehaviour {
     {
         try
         {
-            var ok = false;
+            var ok = true;
+            var opponentData = vote.Outcomes;
             // if All Data is Compatible -> Complete With Winner 
-            foreach (var outcome in vote.Outcomes)
             foreach (var meOutcome in _outcomes)
-                if (outcome.Key == meOutcome.Key && outcome.Value.Placement == meOutcome.Value.Placement)
-                    ok = true;
+            {
+                if (opponentData[meOutcome.Key]?.Placement == meOutcome.Value.Placement &&
+                    opponentData[meOutcome.Key]?.Result == meOutcome.Value.Result) continue;
+                
+                ok = false;
+                break;
+            }
                     
             if(ok)
-                await GameService.GSLive.TurnBased().AcceptVote(vote.MemberFinish.Id);
+                await GameService.GSLive.TurnBased().AcceptVote(vote.Submitter.Id);
             
         }
         catch (Exception e)
@@ -510,7 +532,9 @@ public class GameControllers : MonoBehaviour {
             RestartGame.GetComponent<Button>().onClick.AddListener(ResetGame);
             // Show Winner
             Turn.color = Color.magenta;
-            Turn.text = acceptVote.Result.Any(o => o.Key == _me.Id && o.Value.Placement == 1) ? "You wins!" : "Opponent wins!";
+            
+            if (acceptVote.Result.All(r => r.Value.Result == "Draw" && r.Value.Placement == 0)) Turn.text = "Draw!";
+            else Turn.text = acceptVote.Result.Any(o => o.Key == _me.Id && o.Value.Placement == 1) ? "You wins!" : "Opponent wins!";
         }
         catch (Exception e)
         {
