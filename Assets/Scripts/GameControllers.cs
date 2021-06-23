@@ -236,7 +236,6 @@ public class GameControllers : MonoBehaviour {
         TurnBasedEventHandlers.ChoosedNext += OnChooseNext;
         TurnBasedEventHandlers.TakeTurn += OnTakeTurn;
         TurnBasedEventHandlers.LeftRoom += OnLeaveRoom;
-        TurnBasedEventHandlers.RoomMembersDetailReceived += OnRoomMembersDetailReceived;
         TurnBasedEventHandlers.CurrentTurnMemberReceived += OnCurrentTurnMember;
     }
      
@@ -389,6 +388,8 @@ public class GameControllers : MonoBehaviour {
 
     private void OnCurrentTurnMember(object sender, Member currentMember)
     {
+        Debug.Log("OnCurrentTurnMember : " + currentMember.Name);
+
         try
         {
             _currentTurnMember = currentMember;
@@ -410,16 +411,6 @@ public class GameControllers : MonoBehaviour {
        
     }
     
-    private void OnRoomMembersDetailReceived(object sender, List<Member> members)
-    {
-        // Set Players Info 
-        foreach (var member in members)
-        {
-            if (member.User.IsMe) _me = member;
-            else _opponent = member;
-        }
-    }
-
     private void OnLeaveRoom(object sender, Member e)
     {
         Debug.Log("OnLeaveRoom : " + e.Name);
@@ -473,7 +464,6 @@ public class GameControllers : MonoBehaviour {
             Turn.text = "OnTakeTurn Err : " + e.Message;
             Debug.LogError("OnTakeTurn Err : " + e.Message);
         }
-              
     }
 
     private void OnChooseNext(object sender, Member whoIsNext)
@@ -550,24 +540,23 @@ public class GameControllers : MonoBehaviour {
         Debug.Log("JoinedPlayers : " + e.JoinData.RoomData.JoinedPlayers);
 
         isMatchmaking = false;
-        
-        
+
+
         try
         {
             startMenu.enabled = false;
             GamePlay.enabled = true;
 
             if (e.JoinData.JoinedMember.User.IsMe)
+            {
                 _me = e.JoinData.JoinedMember;
-            else _opponent = e.JoinData.JoinedMember;
-                    
-            // Get Players Info
-            if(_me == null || _opponent == null)
-                await GameService.GSLive.TurnBased().GetRoomMembersDetail();
-
-            // Get CurrentTurn Info
-            if (_currentTurnMember == null)
+                
+                // get current turn
                 await GameService.GSLive.TurnBased().GetCurrentTurnMember();
+                
+                Debug.Log("Getting Room Data...");
+            }
+            else _opponent = e.JoinData.JoinedMember;
         }
         catch (Exception exception)
         {
