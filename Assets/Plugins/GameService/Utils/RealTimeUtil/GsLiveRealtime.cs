@@ -21,7 +21,6 @@
 
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
@@ -54,9 +53,11 @@ namespace Plugins.GameService.Utils.RealTimeUtil
         private static IMemberHandler _memberHandler;
         
         public static bool IsAvailable;
-        public const string Version = "1.4.0 Alpha";
+        public const string Version = "1.5.1 Stable";
         
         public static string CurrentPlayerMemberId => GsSerializer.Object.GetCurrentPlayerMemberId();
+        public static int SerializationRate => GsSerializer.Object.GetSerializationRate();
+
 
         public static int GetRoundTripTime()
         {
@@ -71,8 +72,6 @@ namespace Plugins.GameService.Utils.RealTimeUtil
                 return FiroozehGameService.Core.GameService.GSLive.RealTime().GetPacketLost();
             return -1;
         }
-
-        public static short SerializationRate => 10;
         
         public static class Callbacks
         {
@@ -270,14 +269,13 @@ namespace Plugins.GameService.Utils.RealTimeUtil
             var isOk = _functionHandler.RunFunction(functionName,objType,type,parameters);
             if (!isOk) return;
 
-
             var extraBuffer = GsSerializer.Function.SerializeParams(parameters);
             var functionData = new FunctionData(objType.FullName,functionName,type,extraBuffer);
-           
+            
             // run on this Client
-            if (type == FunctionType.All || type == FunctionType.Buffered)
+            if (type == FunctionType.All || type == FunctionType.AllBuffered)
                 ActionUtil.ApplyFunction(functionData : functionData,monoBehaviourHandler : _monoBehaviourHandler);
-
+            
             SenderUtil.NetworkRunFunction(functionData);
         }
 
