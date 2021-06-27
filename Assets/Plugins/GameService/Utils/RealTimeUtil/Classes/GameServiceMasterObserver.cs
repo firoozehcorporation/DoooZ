@@ -23,6 +23,7 @@
 using FiroozehGameService.Models;
 using FiroozehGameService.Utils;
 using FiroozehGameService.Utils.Serializer;
+using FiroozehGameService.Utils.Serializer.Abstracts;
 using FiroozehGameService.Utils.Serializer.Interfaces;
 using Plugins.GameService.Tools.NaughtyAttributes.Scripts.Core.DrawerAttributes;
 using Plugins.GameService.Tools.NaughtyAttributes.Scripts.Core.MetaAttributes;
@@ -81,6 +82,7 @@ namespace Plugins.GameService.Utils.RealTimeUtil.Classes
         private void OnDestroy()
         {
             ObjectUtil.UnregisterObserver(this);
+            _callerEvent?.Dispose();
         }
 
 

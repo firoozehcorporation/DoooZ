@@ -83,7 +83,7 @@ namespace Plugins.GameService.Utils
         private string _appPath;
         private string _logFile;
 
-        private static bool _isInit;
+        private bool _isInit;
         
         private const string DebugPath = "/GameService";
         private const string BeginLog = "\r\n=======================Begin GameService Debugger Logs======================\r\n";
@@ -94,13 +94,13 @@ namespace Plugins.GameService.Utils
         {
             _appPath = Application.persistentDataPath;
             _logFile = "/GSLog-" + FiroozehGameService.Core.GameService.Version() + ".log";
-
+            
             DontDestroyOnLoad(this);
         }
 
         private void OnEnable()
         {
-            if(_isInit || FiroozehGameService.Core.GameService.IsAuthenticated()) return;
+            if(_isInit) return;
             
             var systemInfo = new SystemInfo
             {

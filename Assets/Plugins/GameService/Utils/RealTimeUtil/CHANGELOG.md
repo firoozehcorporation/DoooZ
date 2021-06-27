@@ -3,12 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.6.0] Stable - 2021-06-28
+
+### Added
+
+- Added Check CurrentPlayerObserving To Avoid Update In Observer Player
+
 
 ## [1.5.1] Stable - 2021-06-26
 
 ### Added
 
-- Added Adaptive Serialization To Work Better On Lossy Networks
+- Added Dynamic Serialization To Work Better On Lossy Networks
 
 
 ## [1.5.0] Alpha - 2021-06-25
