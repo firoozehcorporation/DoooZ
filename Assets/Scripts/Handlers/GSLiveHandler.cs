@@ -27,7 +27,7 @@ namespace Handlers
 {
     public static class GsLiveHandler
     {
-        public static async Task TakeTurn(int whoIsTurn , int pos ,int beforeSign, string opponentId)
+        public static void TakeTurn(int whoIsTurn , int pos ,int beforeSign, string opponentId)
         {
             var turnData = new TurnData
             {
@@ -38,8 +38,7 @@ namespace Handlers
 
             var dataToSend = JsonConvert.SerializeObject(turnData);
             
-            if(GameService.GSLive.IsTurnBasedAvailable())
-               await GameService.GSLive.TurnBased().TakeTurn(dataToSend, opponentId);
+            if(GameService.GSLive.IsTurnBasedAvailable()) GameService.GSLive.TurnBased().TakeTurn(dataToSend, opponentId);
         }
 
     }

@@ -81,7 +81,7 @@ public class GameControllers : MonoBehaviour {
     private List<Member> _members;
 
     private bool _isSuccessfullyLogin;
-    private bool isMatchmaking;
+    private bool _isMatchmaking;
 
 
 
@@ -115,7 +115,7 @@ public class GameControllers : MonoBehaviour {
         }
         else if (_isSuccessfullyLogin && GameService.GSLive.IsCommandAvailable())
         {
-            if(!isMatchmaking) startGameBtn.interactable = true;
+            if(!_isMatchmaking) startGameBtn.interactable = true;
             Status.color = Color.black;
             Status.text = "Status : Connected!";
         }
@@ -306,14 +306,14 @@ public class GameControllers : MonoBehaviour {
 
     }
 
-    private async void OnCellClick (int buttonNumber) {
+    private void OnCellClick (int buttonNumber) {
         // Is My Turn
         try
         {
             Debug.Log("TurnBased Available : " + GameService.GSLive.IsTurnBasedAvailable());
             if (!_currentTurnMember.User.IsMe) return;
             // Send TakeTurnData To Opponent
-            await GsLiveHandler.TakeTurn(_whoTurn == 1 ? 0 : 1, buttonNumber,_whoTurn,_opponent?.Id);
+            GsLiveHandler.TakeTurn(_whoTurn == 1 ? 0 : 1, buttonNumber,_whoTurn,_opponent?.Id);
         }
         catch (Exception e)
         {
@@ -321,7 +321,7 @@ public class GameControllers : MonoBehaviour {
         }
     }
 
-    private async Task WinnerCheck(Member winner, Member loser) {
+    private void WinnerCheck(Member winner, Member loser) {
         var s1 = _markTabel[0] + _markTabel[1] + _markTabel[2];
         var s2 = _markTabel[3] + _markTabel[4] + _markTabel[5];
         var s3 = _markTabel[6] + _markTabel[7] + _markTabel[8];
@@ -374,7 +374,7 @@ public class GameControllers : MonoBehaviour {
         }
         
         // Send Result To Server
-        await GameService.GSLive.TurnBased().Vote(_outcomes);
+        GameService.GSLive.TurnBased().Vote(_outcomes);
 
         foreach (var button in Spaces)
             button.enabled = false;
@@ -430,7 +430,7 @@ public class GameControllers : MonoBehaviour {
     }
 
     
-    private async void OnTakeTurn(object sender, Turn turn)
+    private void OnTakeTurn(object sender, Turn turn)
     {
         Debug.Log("OnTakeTurn : " + turn.WhoTakeTurn.Name);
         try
@@ -450,7 +450,7 @@ public class GameControllers : MonoBehaviour {
             {
                 var winner = turn.WhoTakeTurn;
                 var loser = winner.Id == _me.Id ? _opponent : _me;
-                await WinnerCheck(winner,loser);
+                WinnerCheck(winner,loser);
             }
 
             _whoTurn = turnData.WhoTurn;
@@ -485,7 +485,7 @@ public class GameControllers : MonoBehaviour {
       
     }
 
-    private async void VoteReceived(object sender, Vote vote)
+    private void VoteReceived(object sender, Vote vote)
     {
         try
         {
@@ -502,7 +502,7 @@ public class GameControllers : MonoBehaviour {
             }
                     
             if(ok)
-                await GameService.GSLive.TurnBased().AcceptVote(vote.Submitter.Id);
+                 GameService.GSLive.TurnBased().AcceptVote(vote.Submitter.Id);
             
         }
         catch (Exception e)
@@ -533,13 +533,13 @@ public class GameControllers : MonoBehaviour {
         }
     }
 
-    private async void OnJoinRoom(object sender, JoinEvent e)
+    private void OnJoinRoom(object sender, JoinEvent e)
     {
 
         Debug.Log("OnJoinRoom");
         Debug.Log("JoinedPlayers : " + e.JoinData.RoomData.JoinedPlayers);
 
-        isMatchmaking = false;
+        _isMatchmaking = false;
 
 
         try
@@ -552,7 +552,7 @@ public class GameControllers : MonoBehaviour {
                 _me = e.JoinData.JoinedMember;
                 
                 // get current turn
-                await GameService.GSLive.TurnBased().GetCurrentTurnMember();
+                GameService.GSLive.TurnBased().GetCurrentTurnMember();
                 
                 Debug.Log("Getting Room Data...");
             }
@@ -582,13 +582,13 @@ public class GameControllers : MonoBehaviour {
             startGameBtn.interactable = true;
         
             // Start Game
-            startGameBtn.onClick.AddListener(async () =>
+            startGameBtn.onClick.AddListener(() =>
             {
                 if (GameService.GSLive.IsCommandAvailable())
                 {
-                    isMatchmaking = true;
-                    await GameService.GSLive.TurnBased().AutoMatch(
-                        new GSLiveOption.AutoMatchOption("partner", 2, 2, false));
+                    _isMatchmaking = true;
+                    GameService.GSLive.TurnBased().AutoMatch(
+                        new GSLiveOption.AutoMatchOption("partner"));
                     
                     // go to waiting ui
                     startGameBtn.interactable = false;
