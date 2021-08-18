@@ -239,8 +239,6 @@ public class GameControllers : MonoBehaviour {
         TurnBasedEventHandlers.CurrentTurnMemberReceived += OnCurrentTurnMember;
     }
      
-
-
      private void GameInit () {
         _markTabel = new int[9];
         _outcomes = new Dictionary<string, Outcome>();
@@ -553,7 +551,6 @@ public class GameControllers : MonoBehaviour {
                 
                 // get current turn
                 GameService.GSLive.TurnBased().GetCurrentTurnMember();
-                
                 Debug.Log("Getting Room Data...");
             }
             else _opponent = e.JoinData.JoinedMember;
